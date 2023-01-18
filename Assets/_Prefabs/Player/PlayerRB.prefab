@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2968382860367558484}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: CameraPosition
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -39,7 +39,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7312870197846407455}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Model
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -72,7 +72,7 @@ GameObject:
   - component: {fileID: 5351742930587081089}
   - component: {fileID: 3251489656506220904}
   - component: {fileID: 7881711592038510355}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Capsule
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -156,7 +156,7 @@ GameObject:
   - component: {fileID: 2615107396879342555}
   - component: {fileID: 2263184291327933222}
   - component: {fileID: 6860054276808041658}
-  m_Layer: 3
+  m_Layer: 6
   m_Name: PlayerRB
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -276,20 +276,20 @@ MonoBehaviour:
   groundSphereRadius: 0.5
   groundsLayers:
     serializedVersion: 2
-    m_Bits: 64
+    m_Bits: 8
   onCeiling: 0
   ceilingSphereOffset: 1.6
   ceilingSphereRadius: 0.45
   ceilingLayers:
     serializedVersion: 2
-    m_Bits: 64
+    m_Bits: 8
   onSliding: 1
   sphereCastSlidingLength: 0.1
   sphereCastSlidingOffset: 0.55
   sphereCastSlidingRadius: 0.5
   slidingLayers:
     serializedVersion: 2
-    m_Bits: 64
+    m_Bits: 8
   minSlidingClamp: 20
   maxSlidingClamp: 80
   mainMove:
