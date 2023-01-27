@@ -2253,6 +2253,10 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 754643656685752623, guid: 2352c1ea5c3c55147b83d5d92f74ee67, type: 3}
+      propertyPath: mainMove.slidingSpeed
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 754643656685752623, guid: 2352c1ea5c3c55147b83d5d92f74ee67, type: 3}
       propertyPath: cinemachineCameraPosition
       value: 
       objectReference: {fileID: 1601352}

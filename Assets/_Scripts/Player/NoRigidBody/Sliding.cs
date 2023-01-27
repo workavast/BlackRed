@@ -76,10 +76,15 @@ public class Sliding : MovementState
             return;
         }
 
-        if (InputController.Slide || (_currentSpeed < exitSpeed && downGrade))
+        if (InputController.Slide)
         {
-            Debug.Log(_currentSpeed);
             Player.ChangeState(PlayerState.MainMove);
+            return;
+        }
+        
+        if (_currentSpeed < exitSpeed && downGrade)
+        {
+            Player.ChangeState(PlayerState.Crouch);
             return;
         }
     }

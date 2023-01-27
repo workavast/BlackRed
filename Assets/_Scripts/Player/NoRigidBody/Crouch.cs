@@ -4,12 +4,11 @@ using UnityEngine;
 using System;
 
 [Serializable]
-public class MainMove : MovementState
+public class Crouch : MovementState
 {
     [SerializeField] private float moveSpeed = 10f;
     [SerializeField] private float moveAcceleration = 1;
     [SerializeField] private float gravity = -1;
-    [SerializeField] private float slidingSpeed;
     
     [SerializeField] private LayerMask groundLayers;
     [SerializeField] private float sphereCastRadius;
@@ -34,6 +33,10 @@ public class MainMove : MovementState
     public override void OnEnter()
     {
         base.OnEnter();
+        Vector3 newCameraPos = CinemachineCameraPosition.transform.position;
+        newCameraPos.y -= 1;
+        CinemachineCameraPosition.transform.position = newCameraPos;
+        
         Vector3 startSpeed = CharacterController.velocity;
         startSpeed.y = 0;
         _currentSpeed = startSpeed.magnitude;
@@ -66,11 +69,10 @@ public class MainMove : MovementState
         
         if (InputController.Slide)
         {
-            if(_currentSpeed >= slidingSpeed) Player.ChangeState(PlayerState.Sliding);
-            else Player.ChangeState(PlayerState.Crouch);
-            
+            Player.ChangeState(PlayerState.MainMove);
             return;
         }
+        
     }
 
     public override void OnFixedUpdate()
@@ -81,6 +83,9 @@ public class MainMove : MovementState
     public override void OnExit()
     {
         base.OnExit();
+        Vector3 newCameraPos = CinemachineCameraPosition.transform.position;
+        newCameraPos.y += 1;
+        CinemachineCameraPosition.transform.position = newCameraPos;
     }
     
     private void Gravity()

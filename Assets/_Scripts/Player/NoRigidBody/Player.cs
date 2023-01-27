@@ -20,7 +20,8 @@ public enum PlayerState
     Jump,
     Fall,
     SlopeMoving,
-    Sliding
+    Sliding,
+    Crouch
 }
 public class Player : MonoBehaviour
 {
@@ -70,6 +71,7 @@ public class Player : MonoBehaviour
     [SerializeField] private Fall fall = new Fall();
     [SerializeField] private SlopeMoving slopeMoving = new SlopeMoving();
     [SerializeField] private Sliding sliding = new Sliding();
+    [SerializeField] private Crouch crouch = new Crouch();
     private StateBase _currentState = new StateBase();
     
     public bool OnGround => onGround;
@@ -83,6 +85,7 @@ public class Player : MonoBehaviour
         fall.OnAwake(this.gameObject);
         slopeMoving.OnAwake(this.gameObject);
         sliding.OnAwake(this.gameObject);
+        crouch.OnAwake(this.gameObject);
 
         _currentState = mainMove;
         currentStateName = PlayerState.MainMove;
@@ -95,6 +98,7 @@ public class Player : MonoBehaviour
         fall.OnStart();
         slopeMoving.OnStart();
         sliding.OnStart();
+        crouch.OnStart();
     }
 
     void Update()
@@ -153,6 +157,14 @@ public class Player : MonoBehaviour
                 _currentState.OnExit();
                 _currentState = sliding; 
                 currentStateName = PlayerState.Sliding;
+                _currentState.OnEnter();
+                break;
+            }
+            case (PlayerState.Crouch):
+            {
+                _currentState.OnExit();
+                _currentState = crouch; 
+                currentStateName = PlayerState.Crouch;
                 _currentState.OnEnter();
                 break;
             }
