@@ -69,6 +69,7 @@ public class Player : MonoBehaviour
     [SerializeField] private Jump jump = new Jump();
     [SerializeField] private Fall fall = new Fall();
     [SerializeField] private SlopeMoving slopeMoving = new SlopeMoving();
+    [SerializeField] private Sliding sliding = new Sliding();
     private StateBase _currentState = new StateBase();
     
     public bool OnGround => onGround;
@@ -81,6 +82,7 @@ public class Player : MonoBehaviour
         jump.OnAwake(this.gameObject);
         fall.OnAwake(this.gameObject);
         slopeMoving.OnAwake(this.gameObject);
+        sliding.OnAwake(this.gameObject);
 
         _currentState = mainMove;
         currentStateName = PlayerState.MainMove;
@@ -92,6 +94,7 @@ public class Player : MonoBehaviour
         jump.OnStart();
         fall.OnStart();
         slopeMoving.OnStart();
+        sliding.OnStart();
     }
 
     void Update()
@@ -143,6 +146,19 @@ public class Player : MonoBehaviour
                 _currentState = slopeMoving; 
                 currentStateName = PlayerState.SlopeMoving;
                 _currentState.OnEnter();
+                break;
+            }
+            case (PlayerState.Sliding):
+            {
+                _currentState.OnExit();
+                _currentState = sliding; 
+                currentStateName = PlayerState.Sliding;
+                _currentState.OnEnter();
+                break;
+            }
+            default:
+            {
+                throw new Exception("invalid state name");
                 break;
             }
         }

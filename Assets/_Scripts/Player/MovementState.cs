@@ -11,19 +11,19 @@ public abstract class MovementState : PlayerStateBase
     [SerializeField] private float topClamp = 89f;
     [SerializeField] private float bottomClamp = -89f;
     
-    private GameObject _cinemachineCameraPosition;
+    protected GameObject CinemachineCameraPosition;
     private float _cinemachineAngle;
     private float _rotationVelocity;
 
     public override void OnAwake(GameObject player)
     {
         base.OnAwake(player);
-        _cinemachineCameraPosition = PlayerTransform.Find("CameraPosition").gameObject;
+        CinemachineCameraPosition = PlayerTransform.Find("CameraPosition").gameObject;
     }
 
     public override void OnEnter()
     {
-        _cinemachineAngle = _cinemachineCameraPosition.transform.localRotation.eulerAngles.x;
+        _cinemachineAngle = CinemachineCameraPosition.transform.localRotation.eulerAngles.x;
         
         if (_cinemachineAngle > 90f)
             _cinemachineAngle = (_cinemachineAngle - 270) - 90;
@@ -45,7 +45,7 @@ public abstract class MovementState : PlayerStateBase
 
             _cinemachineAngle = AngleClamp(_cinemachineAngle, bottomClamp, topClamp);
             
-            _cinemachineCameraPosition.transform.localRotation = Quaternion.Euler(_cinemachineAngle,0f,0f);
+            CinemachineCameraPosition.transform.localRotation = Quaternion.Euler(_cinemachineAngle,0f,0f);
             
             PlayerTransform.Rotate(Vector3.up * _rotationVelocity);
         }

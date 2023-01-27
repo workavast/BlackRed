@@ -18,7 +18,6 @@ public class MainMove : MovementState
     private float _verticalSpeed = 0;
 
     private Vector3 _moveVelocity = Vector3.zero;
-    private Vector3 _inertVelocity = Vector3.zero;
     private Vector3 _verticalVelocity = Vector3.zero;
 
     public override void OnAwake(GameObject player)
@@ -44,7 +43,7 @@ public class MainMove : MovementState
         base.OnUpdate();
         Move();
         
-        CharacterController.Move((_moveVelocity + _verticalVelocity + _inertVelocity) * Time.deltaTime);
+        CharacterController.Move((_moveVelocity + _verticalVelocity) * Time.deltaTime);
 
         if (Player.OnGround && Player.OnSlope)
         {
@@ -63,6 +62,13 @@ public class MainMove : MovementState
             Player.ChangeState(PlayerState.Jump);
             return;
         }
+        
+        if (InputController.Slide)
+        {
+            Player.ChangeState(PlayerState.Sliding);
+            return;
+        }
+        
     }
 
     public override void OnFixedUpdate()
