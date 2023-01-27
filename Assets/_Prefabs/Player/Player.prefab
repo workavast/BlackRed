@@ -50,7 +50,7 @@ CharacterController:
   serializedVersion: 2
   m_Height: 2
   m_Radius: 0.5
-  m_SlopeLimit: 60
+  m_SlopeLimit: 89
   m_StepOffset: 0.6
   m_SkinWidth: 0.02
   m_MinMoveDistance: 0
@@ -67,9 +67,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 06b8c1b50b46f2e4c905b61e2ed7c156, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  jump: 0
   sprint: 0
   move: {x: 0, y: 0}
+  moveV3: {x: 0, y: 0, z: 0}
   look: {x: 0, y: 0}
 --- !u!114 &754643656685752623
 MonoBehaviour:
@@ -83,42 +83,77 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad8aff90aa73f744dbc8fe55c2b88b5d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  healthPoints:
-    maxValue: 0
-    currentValue: 0
-  sprintSpeed: 10
-  walkSpeed: 6
-  crouchSpeed: 3
-  moveAcceleration: 1
-  mouseSensitive: 1
-  gravity: -15
-  jumpHeight: 4
-  onJump: 1
+  showGizmos:
+    groundSphere: 0
+    ceilingSphere: 0
+    slopeSphere: 0
+    stateGizmos: 0
   onGround: 1
-  groundSphereOffset: 0.3
-  groundSphereRadius: 0.4
+  groundSphereOffset: 0.35
+  groundSphereRadius: 0.49
   groundsLayers:
     serializedVersion: 2
-    m_Bits: 64
+    m_Bits: 8
   onCeiling: 0
   ceilingSphereOffset: 1.6
   ceilingSphereRadius: 0.45
   ceilingLayers:
     serializedVersion: 2
-    m_Bits: 65
-  onSliding: 0
-  slidingSpeed: 1
-  sphereCastSlidingLength: 2.5
-  sphereCastSlidingOffset: 0.5
-  sphereCastSlidingRadius: 0.5
-  slidingGroundsLayers:
+    m_Bits: 8
+  onSlope: 0
+  slopeSphereCastLength: 0.5
+  slopeSphereCastOffset: 0.5
+  slopeSphereCastRadius: 0.49
+  slopeLayers:
     serializedVersion: 2
-    m_Bits: 64
-  minSlidingClamp: 30
-  maxSlidingClamp: 90
-  CinemachineCameraTarget: {fileID: 6425420449676643442}
-  TopClamp: 89
-  BottomClamp: -89
+    m_Bits: 8
+  minSlopeClamp: 35
+  maxSlopeClamp: 90
+  currentStateName: 0
+  mainMove:
+    mouseSensitive: 1.25
+    topClamp: 89
+    bottomClamp: -89
+    moveSpeed: 10
+    moveAcceleration: 5.5
+    gravity: -45
+    groundLayers:
+      serializedVersion: 2
+      m_Bits: 8
+    sphereCastRadius: 0.49
+    sphereCastDistance: 1
+  jump:
+    mouseSensitive: 1.25
+    topClamp: 89
+    bottomClamp: -89
+    moveSpeed: 10
+    moveAcceleration: 1
+    gravity: -5
+    startVerticalSpeed: 4
+    groundCheckPause: 0.05
+  fall:
+    mouseSensitive: 1.25
+    topClamp: 89
+    bottomClamp: -89
+    moveSpeed: 10
+    moveAcceleration: 1
+    gravity: -4
+  slopeMoving:
+    mouseSensitive: 1.25
+    topClamp: 89
+    bottomClamp: -89
+    moveSpeed: 10
+    moveAcceleration: 0.5
+    gravity: -150
+    inertRotateAcceleration: 5
+    groundLayers:
+      serializedVersion: 2
+      m_Bits: 8
+    slidingSpeed: 8
+    slidingAcceleration: 1
+    inertiaAcceleration: 1
+    sphereCastRadius: 0.49
+    sphereCastDistance: 1
 --- !u!114 &4574385815803772394
 MonoBehaviour:
   m_ObjectHideFlags: 0

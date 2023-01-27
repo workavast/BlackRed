@@ -4,15 +4,11 @@ using UnityEngine;
 using System;
 
 [Serializable]
-public class Sliding : MovementState
+public class Fall : MovementState
 {
     [SerializeField] private float moveSpeed = 10f;
     [SerializeField] private float moveAcceleration = 1;
     [SerializeField] private float gravity = -1;
-    
-    [SerializeField] private LayerMask groundLayers;
-    [SerializeField] private float sphereCastRadius;
-    [SerializeField] private float sphereCastDistance;
     
     private float _currentSpeed = 0;
     private float _verticalSpeed = 0;
@@ -20,11 +16,6 @@ public class Sliding : MovementState
     private Vector3 _moveVelocity = Vector3.zero;
     private Vector3 _inertVelocity = Vector3.zero;
     private Vector3 _verticalVelocity = Vector3.zero;
-
-    public override void OnAwake(GameObject player)
-    {
-        base.OnAwake(player);
-    }
 
     public override void OnStart()
     {
@@ -35,6 +26,7 @@ public class Sliding : MovementState
     {
         base.OnEnter();
         Vector3 startSpeed = CharacterController.velocity;
+        _verticalVelocity.y = startSpeed.y;
         startSpeed.y = 0;
         _currentSpeed = startSpeed.magnitude;
     }
@@ -52,15 +44,9 @@ public class Sliding : MovementState
             return;
         }
 
-        if (!Player.OnGround)
+        if (Player.OnGround)
         {
-            Player.ChangeState(PlayerState.Fall);
-            return;
-        }
-
-        if (InputController.Jump)
-        {
-            Player.ChangeState(PlayerState.Jump);
+            Player.ChangeState(PlayerState.MainMove);
             return;
         }
     }
@@ -73,6 +59,11 @@ public class Sliding : MovementState
     public override void OnExit()
     {
         base.OnExit();
+    }
+
+    public override void OnDrawGizmos()
+    {
+        base.OnDrawGizmos();
     }
     
     private void Gravity()
@@ -88,41 +79,19 @@ public class Sliding : MovementState
     private void Move()
     {
         Gravity();
-        
+
+        _currentSpeed = Lerp(moveSpeed,_currentSpeed,moveAcceleration, 0.1f, true);
+
         Vector3 inputDirection = (InputController.move.x * PlayerTransform.right + InputController.move.y * PlayerTransform.forward).normalized;
         
-        RaycastHit hit;
-        Physics.SphereCast(PlayerTransform.position + Vector3.up, sphereCastRadius, Vector3.down, out hit, sphereCastDistance, groundLayers,
-            QueryTriggerInteraction.Ignore);
-
-        float targetSpeed;
-        float angle = Vector3.Angle(Vector3.up, hit.normal);
-        if (angle != 0)
-        {
-            Vector3 normal = hit.normal;
-            normal.y = 0;
-            float moveAngle = Vector3.Angle(normal, inputDirection);
-             
-            if (moveAngle > 90) moveAngle = 180 - moveAngle;
-             
-            float velocityScale = Mathf.Abs(moveAngle/90 - 1);
-            float velocityDowngrade = (inputDirection.normalized * (moveSpeed *  Mathf.Pow(angle/90,1.75f))).magnitude;
-            velocityDowngrade *= velocityScale;
-
-            targetSpeed = ((inputDirection.normalized * moveSpeed) - (inputDirection.normalized * velocityDowngrade)).magnitude;
-        }
-        else
-        {
-            targetSpeed = (inputDirection.normalized * moveSpeed).magnitude;
-        }
-        
-        _currentSpeed = Lerp(targetSpeed, _currentSpeed, moveAcceleration, 0.1f, true);
         _moveVelocity = inputDirection.normalized * _currentSpeed;
     }
     
-    public override void OnDrawGizmos()
-    {
-        base.OnDrawGizmos();
-        Gizmos.DrawSphere(PlayerTransform.position + Vector3.up + Vector3.down * sphereCastDistance, sphereCastRadius);
-    }
+    
+    
+    
+    
+    
+    
+    
 }
