@@ -4,7 +4,7 @@ using UnityEngine;
 using System;
 
 [Serializable]
-public class Crouch : MovementState
+public class Crouch : PlayerCameraMoveState
 {
     [SerializeField] private float moveSpeed = 10f;
     [SerializeField] private float moveAcceleration = 1;

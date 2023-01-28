@@ -4,12 +4,12 @@ using UnityEngine;
 using System;
 
 [Serializable]
-public abstract class MovementState : PlayerStateBase
+public abstract class PlayerCameraMoveState : PlayerStateBase
 {
     [Tooltip("Move speed of the character, m/s")]
     [SerializeField] private float mouseSensitive = 1f;
-    [SerializeField] private float topClamp = 89f;
-    [SerializeField] private float bottomClamp = -89f;
+    [SerializeField] [Range(-89f,89f)] private float topClamp = 89f;
+    [SerializeField] [Range(-89f,89f)] private float bottomClamp = -89f;
     
     protected GameObject CinemachineCameraPosition;
     private float _cinemachineAngle;

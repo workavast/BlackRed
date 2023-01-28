@@ -4,7 +4,7 @@ using UnityEngine;
 using System;
 
 [Serializable]
-public class Fall : MovementState
+public class Fall : PlayerCameraMoveState
 {
     [SerializeField] private float moveSpeed = 10f;
     [SerializeField] private float moveAcceleration = 1;

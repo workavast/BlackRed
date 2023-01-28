@@ -4,7 +4,7 @@ using UnityEngine;
 using System;
 
 [Serializable]
-public class Sliding : MovementState
+public class Sliding : PlayerCameraMoveState
 {
     [SerializeField] private float moveSpeed = 10f;
     [SerializeField] private float exitSpeed = 10f;

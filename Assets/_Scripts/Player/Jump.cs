@@ -4,7 +4,7 @@ using UnityEngine;
 using System;
 
 [Serializable]
-public class Jump : MovementState
+public class Jump : PlayerCameraMoveState
 {
     [SerializeField] private float moveSpeed = 10f;
     [SerializeField] private float moveAcceleration = 1;

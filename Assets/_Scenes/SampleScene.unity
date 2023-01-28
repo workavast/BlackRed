@@ -2253,10 +2253,6 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 754643656685752623, guid: 2352c1ea5c3c55147b83d5d92f74ee67, type: 3}
-      propertyPath: mainMove.slidingSpeed
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 754643656685752623, guid: 2352c1ea5c3c55147b83d5d92f74ee67, type: 3}
       propertyPath: cinemachineCameraPosition
       value: 
       objectReference: {fileID: 1601352}
@@ -2316,7 +2312,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 4574385815803772394, guid: 2352c1ea5c3c55147b83d5d92f74ee67, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 2352c1ea5c3c55147b83d5d92f74ee67, type: 3}
 --- !u!43 &174128688
 Mesh:
