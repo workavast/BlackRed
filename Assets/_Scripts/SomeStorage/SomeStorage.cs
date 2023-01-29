@@ -45,6 +45,6 @@ public class SomeStorage
     {
         currentValue += value;
 
-        Mathf.Clamp(currentValue, 0, maxValue);
+        currentValue = Mathf.Clamp(currentValue, 0, maxValue);
     }
 }

@@ -53,8 +53,26 @@ public class InputController : MonoBehaviour
     }
     private bool _slide;
     
+    public bool FirstAbility
+    {
+        get
+        {
+            if (_firstAbility)
+            {
+                _firstAbility = false;
+                return true;
+            }
+            else
+                return false;
+        }
+        private set { _firstAbility = value; }
+    }
+    private bool _firstAbility;
+    
     public Vector2 move;
     public Vector2 look;
+    
+    
     
     public void OnMove(InputValue value)
     {
@@ -79,5 +97,10 @@ public class InputController : MonoBehaviour
     public void OnSlide(InputValue value)
     {
         _slide = value.isPressed;
+    }
+
+    public void OnFirstAbility(InputValue value)
+    {
+        _firstAbility = value.isPressed;
     }
 }

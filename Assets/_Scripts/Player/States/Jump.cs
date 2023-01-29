@@ -62,12 +62,6 @@ public class Jump : PlayerCameraMoveState
             Player.ChangeState(PlayerState.MainMove);
             return;
         }
-        
-        if (InputController.Jump)
-        {
-            Player.ChangeState(PlayerState.Jump);
-            return;
-        }
     }
 
     public override void OnFixedUpdate()
