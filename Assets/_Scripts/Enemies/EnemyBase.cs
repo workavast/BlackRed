@@ -28,10 +28,12 @@ public class EnemyBase : MonoBehaviour
 
     protected virtual void OnUpdate()
     {
-        transform.LookAt(PlayerTransform);
+        Vector3 targetPos = PlayerTransform.position;
+        targetPos.y = transform.position.y;
+        transform.LookAt(targetPos);
     }
 
-    protected virtual void TakeDamage(float damage)
+    public virtual void TakeDamage(float damage)
     {
         healthPoints.ChangeCurrentValue(-damage);
     }

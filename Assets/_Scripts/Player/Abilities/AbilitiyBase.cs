@@ -5,10 +5,12 @@ using UnityEngine;
 public class AbilitiyBase
 {
     protected Player Player;
+    protected Transform PlayerTransform;
 
     public virtual void OnAwake(GameObject obj)
     {
         Player = obj.GetComponent<Player>();
+        PlayerTransform = obj.transform;
     }
 
     public virtual void OnStart(){}

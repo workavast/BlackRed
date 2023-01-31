@@ -69,6 +69,39 @@ public class InputController : MonoBehaviour
     }
     private bool _firstAbility;
     
+    public bool SecondAbility
+    {
+        get
+        {
+            if (_secondAbility)
+            {
+                _secondAbility = false;
+                return true;
+            }
+            else
+                return false;
+        }
+        private set { _secondAbility = value; }
+    }
+    private bool _secondAbility;
+    
+    
+    public bool ThirdAbility
+    {
+        get
+        {
+            if (_thirdAbility)
+            {
+                _thirdAbility = false;
+                return true;
+            }
+            else
+                return false;
+        }
+        private set { _thirdAbility = value; }
+    }
+    private bool _thirdAbility;
+    
     public Vector2 move;
     public Vector2 look;
     
@@ -102,5 +135,15 @@ public class InputController : MonoBehaviour
     public void OnFirstAbility(InputValue value)
     {
         _firstAbility = value.isPressed;
+    }
+    
+    public void OnSecondAbility(InputValue value)
+    {
+        _secondAbility = value.isPressed;
+    }
+    
+    public void OnThirdAbility(InputValue value)
+    {
+        _thirdAbility = value.isPressed;
     }
 }

@@ -67,7 +67,7 @@ public enum PlayerState
     Crouch
 }
 
-public class Player : MonoBehaviour
+public class Player : MonoBehaviour, ICastSphereTake
 {
     [Header("Gizmos")] 
     [SerializeField] private ShowGizmos showGizmos;
@@ -93,6 +93,8 @@ public class Player : MonoBehaviour
     
     [Header("Abilities")] 
     [SerializeField] private AirJump airJump;
+    [SerializeField] private SlowMotion slowMotion;
+    [SerializeField] private CastSphere castSphere;
 
     private InputController _inputController;
     private void Awake()
@@ -108,6 +110,8 @@ public class Player : MonoBehaviour
         currentStateName = PlayerState.MainMove;
 
         airJump.OnAwake(this.gameObject);
+        slowMotion.OnAwake(this.gameObject);
+        castSphere.OnAwake(this.gameObject);
         _inputController = GetComponent<InputController>();
     }
     
@@ -130,9 +134,18 @@ public class Player : MonoBehaviour
         _currentState.OnUpdate();
 
         airJump.OnUpdate();
+        slowMotion.OnUpdate();
         if (_inputController.FirstAbility)
         {
             airJump.OnUse();
+        }
+        if (_inputController.SecondAbility)
+        {
+            slowMotion.OnUse();
+        }
+        if (_inputController.ThirdAbility)
+        {
+            castSphere.OnUse();
         }
     }
 
@@ -200,6 +213,11 @@ public class Player : MonoBehaviour
                 break;
             }
         }
+    }
+
+    public void CastSphereTake()
+    {
+        ChangeState(PlayerState.Jump);
     }
 
     #region Checks

@@ -186,6 +186,18 @@ MonoBehaviour:
       maxValue: 2
       currentValue: 0
     ReloadSpeed: 1
+  slowMotion:
+    Reloading:
+      maxValue: 5
+      currentValue: 0
+    ReloadSpeed: 1
+    TimeScale: 0.25
+  castSphere:
+    Reloading:
+      maxValue: 3
+      currentValue: 0
+    ReloadSpeed: 1
+    Sphere: {fileID: 8373615982903687276, guid: e349984cf311079439943e4ebabbf86f, type: 3}
 --- !u!114 &3136511296777589797
 MonoBehaviour:
   m_ObjectHideFlags: 0
