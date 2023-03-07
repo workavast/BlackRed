@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
-public class UiScreenRepository : MonoBehaviour
+public class UIScreenRepository : MonoBehaviour
 {
-    private Dictionary<Type, UiScreenBase> _screens;
+    private Dictionary<Type, UIScreenBase> _screens;
 
-    private static UiScreenRepository _instance;
+    private static UIScreenRepository _instance;
 
     private void Awake()
     {
@@ -19,19 +19,19 @@ public class UiScreenRepository : MonoBehaviour
 
         _instance = this;
 
-        _screens = new Dictionary<Type, UiScreenBase>();
+        _screens = new Dictionary<Type, UIScreenBase>();
 
-        UiScreenBase[] uiScreens = FindObjectsOfType<UiScreenBase>(true);
-        foreach(UiScreenBase screen in uiScreens)
+        UIScreenBase[] uiScreens = FindObjectsOfType<UIScreenBase>(true);
+        foreach(UIScreenBase screen in uiScreens)
             _screens.Add(screen.GetType(), screen);
     }
 
-    public static TScreen GetScreen<TScreen>() where TScreen : UiScreenBase
+    public static TScreen GetScreen<TScreen>() where TScreen : UIScreenBase
     {
         if (_instance == null)
             throw new NullReferenceException($"Instance is null");
         
-        if(_instance._screens.TryGetValue(typeof(TScreen), out UiScreenBase screen))
+        if(_instance._screens.TryGetValue(typeof(TScreen), out UIScreenBase screen))
             return (TScreen)screen;
 
         return default;
