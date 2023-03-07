@@ -91,14 +91,14 @@ MonoBehaviour:
     radius: 0.49
     groundsLayers:
       serializedVersion: 2
-      m_Bits: 8
+      m_Bits: 9
   ceilingCheckSphere:
     onCeiling: 0
     offset: 1.6
     radius: 0.45
     ceilingLayers:
       serializedVersion: 2
-      m_Bits: 8
+      m_Bits: 9
   slopeCheckSphere:
     onSlope: 0
     length: 0.5
@@ -106,7 +106,7 @@ MonoBehaviour:
     radius: 0.49
     slopeLayers:
       serializedVersion: 2
-      m_Bits: 8
+      m_Bits: 9
     minSlopeClamp: 35
     maxSlopeClamp: 90
   currentStateName: 0
@@ -120,7 +120,7 @@ MonoBehaviour:
     slidingSpeed: 5
     groundLayers:
       serializedVersion: 2
-      m_Bits: 8
+      m_Bits: 9
     sphereCastRadius: 0.49
     sphereCastDistance: 1
   jump:
@@ -150,7 +150,7 @@ MonoBehaviour:
     inertRotateAcceleration: 5
     groundLayers:
       serializedVersion: 2
-      m_Bits: 8
+      m_Bits: 9
     slidingSpeed: 8
     slidingAcceleration: 1
     inertiaAcceleration: 1
@@ -166,7 +166,7 @@ MonoBehaviour:
     gravity: -150
     groundLayers:
       serializedVersion: 2
-      m_Bits: 8
+      m_Bits: 9
     sphereCastRadius: 0.49
     sphereCastDistance: 1
   crouch:
@@ -178,7 +178,7 @@ MonoBehaviour:
     gravity: -45
     groundLayers:
       serializedVersion: 2
-      m_Bits: 8
+      m_Bits: 9
     sphereCastRadius: 0.49
     sphereCastDistance: 1
   airJump:
