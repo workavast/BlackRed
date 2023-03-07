@@ -300,6 +300,7 @@ GameObject:
   - component: {fileID: 3367863201278224352}
   - component: {fileID: 8926477937306433539}
   - component: {fileID: 8256456851170838807}
+  - component: {fileID: 5761005480169176368}
   m_Layer: 0
   m_Name: EnteryScreen
   m_TagString: Untagged
@@ -395,6 +396,20 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!114 &5761005480169176368
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 346565593289043167}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0962e2b9cdc68b948955ff3eeebe5a38, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerName: {fileID: 8729119625965769552}
+  playerPassword: {fileID: 4201427303048187736}
 --- !u!1 &495725179034253748
 GameObject:
   m_ObjectHideFlags: 0
