@@ -2,10 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
-using UnityEngine.SceneManagement;
-using UnityEngine.UI;
 
-public class RegistrationScreen : UIScreenBase
+public class EnteryScreen : UIScreenBase
 {
     [SerializeField] private TMP_InputField playerName;
     [SerializeField] private TMP_InputField playerPassword;
@@ -17,11 +15,11 @@ public class RegistrationScreen : UIScreenBase
     {
         if (_playerName.Length > 0 && _playerPassword.Length > 0)
         {
-            bool playerRegistered= NetworkController.RegistrationNewPlayer(_playerName, _playerPassword);
+            bool playerEntered = NetworkController.EnterPlayer(_playerName, _playerPassword);
 
-            if (playerRegistered)
+            if (playerEntered)
             {
-                Debug.Log("You are registered");
+                Debug.Log("You are entered");
             }
             else
             {
