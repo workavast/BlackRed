@@ -7,15 +7,12 @@ public class EnteryScreen : UIScreenBase
 {
     [SerializeField] private TMP_InputField playerName;
     [SerializeField] private TMP_InputField playerPassword;
-
-    private string _playerName;
-    private string _playerPassword;
     
     public void _Confirm()
     {
-        if (_playerName.Length > 0 && _playerPassword.Length > 0)
+        if (playerName.text.Length > 0 && playerPassword.text.Length > 0)
         {
-            bool playerEntered = NetworkController.EnterPlayer(_playerName, _playerPassword);
+            bool playerEntered = NetworkController.EnterPlayer(playerName.text, playerPassword.text);
 
             if (playerEntered)
             {
