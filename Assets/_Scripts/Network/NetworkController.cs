@@ -21,9 +21,9 @@ public class NetworkController : MonoBehaviour
         
     }
 
-    public static bool EnterPlayer(string playerName, string playerPassword)
+    public static bool UserEnter(string playerName, string playerPassword)
     {
-        _networkController.StartCheck(playerName, playerPassword);
+        _networkController.StartUserEnterCoroutine(playerName, playerPassword);
         
         if (playerName == _playerName && playerPassword == _playerPassword)
             return true;
@@ -31,12 +31,12 @@ public class NetworkController : MonoBehaviour
             return false;
     }
 
-    private void StartCheck(string playerName, string playerPassword)
+    private void StartUserEnterCoroutine(string playerName, string playerPassword)
     {
-        StartCoroutine(_networkController.Check(playerName, playerPassword));
+        StartCoroutine(UserEnterCoroutine(playerName, playerPassword));
     }
     
-    private IEnumerator Check(string playerName, string playerPassword)
+    private IEnumerator UserEnterCoroutine(string playerName, string playerPassword)
     {
         List<IMultipartFormSection> wwwForm = new List<IMultipartFormSection>();
         wwwForm.Add(new MultipartFormDataSection("name", playerName));
@@ -59,7 +59,7 @@ public class NetworkController : MonoBehaviour
         www.Dispose();
     }
     
-    public static bool RegistrationNewPlayer(string playerName, string playerPassword)
+    public static bool UserRegistration(string playerName, string playerPassword)
     {
         if (playerName == _playerName && playerPassword == _playerPassword)
             return true;

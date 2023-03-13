@@ -17,7 +17,7 @@ public class RegistrationScreen : UIScreenBase
     {
         if (_playerName.Length > 0 && _playerPassword.Length > 0)
         {
-            bool playerRegistered= NetworkController.RegistrationNewPlayer(_playerName, _playerPassword);
+            bool playerRegistered= NetworkController.UserRegistration(_playerName, _playerPassword);
 
             if (playerRegistered)
             {

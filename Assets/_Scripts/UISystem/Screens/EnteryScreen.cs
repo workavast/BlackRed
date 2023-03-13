@@ -12,7 +12,7 @@ public class EnteryScreen : UIScreenBase
     {
         if (playerName.text.Length > 0 && playerPassword.text.Length > 0)
         {
-            bool playerEntered = NetworkController.EnterPlayer(playerName.text, playerPassword.text);
+            bool playerEntered = NetworkController.UserEnter(playerName.text, playerPassword.text);
 
             if (playerEntered)
             {
