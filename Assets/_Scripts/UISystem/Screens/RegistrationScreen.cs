@@ -10,14 +10,11 @@ public class RegistrationScreen : UIScreenBase
     [SerializeField] private TMP_InputField playerName;
     [SerializeField] private TMP_InputField playerPassword;
 
-    private string _playerName;
-    private string _playerPassword;
-    
     public void _Confirm()
     {
-        if (_playerName.Length > 0 && _playerPassword.Length > 0)
+        if (playerName.text.Length > 0 && playerPassword.text.Length > 0)
         {
-            bool playerRegistered= NetworkController.UserRegistration(_playerName, _playerPassword);
+            bool playerRegistered= NetworkController.UserRegistration(playerName.text, playerPassword.text);
 
             if (playerRegistered)
             {
