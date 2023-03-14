@@ -3,6 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
 
+enum Commands
+{
+    UserEnter,
+    UserRegistration
+}
 public class NetworkController : MonoBehaviour
 {
     private static string _playerName;
@@ -39,6 +44,7 @@ public class NetworkController : MonoBehaviour
     private IEnumerator UserEnterCoroutine(string playerName, string playerPassword)
     {
         List<IMultipartFormSection> wwwForm = new List<IMultipartFormSection>();
+        wwwForm.Add(new MultipartFormDataSection("Command", Commands.UserEnter.ToString()));
         wwwForm.Add(new MultipartFormDataSection("name", playerName));
         wwwForm.Add(new MultipartFormDataSection("password", playerPassword));
 
@@ -61,9 +67,39 @@ public class NetworkController : MonoBehaviour
     
     public static bool UserRegistration(string playerName, string playerPassword)
     {
+        _networkController.StartUserRegistrationCoroutine(playerName, playerPassword);
         if (playerName == _playerName && playerPassword == _playerPassword)
             return true;
         else
             return false;
+    }
+    
+    private void StartUserRegistrationCoroutine(string playerName, string playerPassword)
+    {
+        StartCoroutine(UserRegistrationCoroutine(playerName, playerPassword));
+    }
+    
+    private IEnumerator UserRegistrationCoroutine(string playerName, string playerPassword)
+    {
+        List<IMultipartFormSection> wwwForm = new List<IMultipartFormSection>();
+        wwwForm.Add(new MultipartFormDataSection("Command", Commands.UserRegistration.ToString()));
+        wwwForm.Add(new MultipartFormDataSection("name", playerName));
+        wwwForm.Add(new MultipartFormDataSection("password", playerPassword));
+
+        UnityWebRequest www = UnityWebRequest.Post("blackredgame.loc", wwwForm);
+        
+        yield return www.SendWebRequest();
+        
+        if (www.isNetworkError || www.isHttpError)
+        {
+            Debug.Log(www.error);
+        }
+        else
+        {
+            Debug.Log(www.downloadHandler.text);
+            //byte[] result = www.downloadHandler.data;
+        }
+        
+        www.Dispose();
     }
 }
