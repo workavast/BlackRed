@@ -27,6 +27,7 @@ public class NetworkController : MonoBehaviour
     
     void Start()
     {
+        DontDestroyOnLoad(this.gameObject);
         _networkController = this;
     }
 
