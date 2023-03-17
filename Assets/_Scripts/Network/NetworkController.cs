@@ -1,7 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Numerics;
+using System.Runtime.Serialization.Json;
 using UnityEngine;
 using UnityEngine.Networking;
+
+[System.Serializable]
+public class User
+{
+    public int id;
+    public string name;
+}
 
 enum Commands
 {
@@ -76,7 +85,11 @@ public class NetworkController : MonoBehaviour
         else
         {
             Debug.Log("Completed");
-            //byte[] result = www.downloadHandler.data;
+            var json = www.downloadHandler.text;
+
+            User user = JsonUtility.FromJson<User>(json);
+            Debug.Log(user.id);
+            Debug.Log(user.name);
         }
         
         www.Dispose();
@@ -131,7 +144,11 @@ public class NetworkController : MonoBehaviour
         else
         {
             Debug.Log("Completed");
-            //byte[] result = www.downloadHandler.data;
+            var json = www.downloadHandler.text;
+
+            User user = JsonUtility.FromJson<User>(json);
+            Debug.Log(user.id);
+            Debug.Log(user.name);
         }
         
         www.Dispose();
