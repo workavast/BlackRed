@@ -52,13 +52,30 @@ public class NetworkController : MonoBehaviour
         
         yield return www.SendWebRequest();
         
-        if (www.isNetworkError || www.isHttpError)
+        if (www.error != null)
         {
-            Debug.Log(www.error);
+            switch (www.responseCode)
+            {
+                case (401):
+                {
+                    Debug.Log("Not correct password");
+                    break;
+                }
+                case (404):
+                {
+                    Debug.Log("This name dont exist");
+                    break;
+                }
+                default:
+                {
+                    Debug.Log("Unexpected error");
+                    break;
+                }
+            }
         }
         else
         {
-            Debug.Log(www.downloadHandler.text);
+            Debug.Log("Completed");
             //byte[] result = www.downloadHandler.data;
         }
         
@@ -90,13 +107,30 @@ public class NetworkController : MonoBehaviour
         
         yield return www.SendWebRequest();
         
-        if (www.isNetworkError || www.isHttpError)
+        if (www.error != null)
         {
-            Debug.Log(www.error);
+            switch (www.responseCode)
+            {
+                case (409):
+                {
+                    Debug.Log("This name is occupied");
+                    break;
+                }
+                case (520):
+                {
+                    Debug.Log("Some error, try again");
+                    break;
+                }
+                default:
+                {
+                    Debug.Log("Unexpected error");
+                    break;
+                }
+            }        
         }
         else
         {
-            Debug.Log(www.downloadHandler.text);
+            Debug.Log("Completed");
             //byte[] result = www.downloadHandler.data;
         }
         
