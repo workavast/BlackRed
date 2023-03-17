@@ -7,38 +7,44 @@ public class MovingPlatform : MonoBehaviour
 {
     [SerializeField] private float speed;
     [SerializeField] private float xOffset;
-    private Vector3 startPos;
-    private int direction = 1;
+    private Vector3 _startPos;
+    private int _direction = 1;
+    private CharacterController _characterController;
+    private Rigidbody _rigidbody;
+    private Vector3 _currentPos;
     
     private void Start()
     {
-        startPos = transform.position;
+        _startPos = transform.position;
+        _currentPos = _startPos;
+        _rigidbody = GetComponent<Rigidbody>();
     }
 
     void Update()
     {
-        if (xOffset <= Mathf.Abs(startPos.x - transform.position.x))
+        if (xOffset <= Mathf.Abs(_startPos.x - _currentPos.x))
         {
-            direction *= -1;
+            _direction *= -1;
         }
 
-        Vector3 newPos = new Vector3(speed * direction * Time.deltaTime, 0, 0);
-        transform.Translate(newPos);
+        _currentPos +=  new Vector3(speed * _direction * Time.deltaTime, 0, 0);
+        
+        _rigidbody.MovePosition(_currentPos);
     }
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.CompareTag("Player"))
         {
-            other.transform.parent = transform;
+            _characterController = other.GetComponent<CharacterController>();
         }
     }
 
-    private void OnTriggerExit(Collider other)
+    private void OnTriggerStay(Collider other)
     {
         if (other.gameObject.CompareTag("Player"))
         {
-            other.transform.parent = null;
+            _characterController.Move(_rigidbody.velocity * Time.deltaTime);
         }
     }
 }

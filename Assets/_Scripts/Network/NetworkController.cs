@@ -19,7 +19,8 @@ enum Commands
 }
 public class NetworkController : MonoBehaviour
 {
-    private static string _playerName;
+    private static User user;
+    public static string UserName => user.name;
     private static string _playerPassword;
     private static int _playerID;
 
@@ -40,7 +41,7 @@ public class NetworkController : MonoBehaviour
     {
         _networkController.StartUserEnterCoroutine(playerName, playerPassword);
         
-        if (playerName == _playerName && playerPassword == _playerPassword)
+        if (playerName == UserName && playerPassword == _playerPassword)
             return true;
         else
             return false;
@@ -88,7 +89,10 @@ public class NetworkController : MonoBehaviour
             Debug.Log("Completed");
             var json = www.downloadHandler.text;
 
-            User user = JsonUtility.FromJson<User>(json);
+            user = JsonUtility.FromJson<User>(json);
+            
+            UIController.SetWindow(Screen.MainMenu);
+            
             Debug.Log(user.id);
             Debug.Log(user.name);
         }
@@ -99,7 +103,7 @@ public class NetworkController : MonoBehaviour
     public static bool UserRegistration(string playerName, string playerPassword)
     {
         _networkController.StartUserRegistrationCoroutine(playerName, playerPassword);
-        if (playerName == _playerName && playerPassword == _playerPassword)
+        if (playerName == UserName && playerPassword == _playerPassword)
             return true;
         else
             return false;
@@ -147,9 +151,11 @@ public class NetworkController : MonoBehaviour
             Debug.Log("Completed");
             var json = www.downloadHandler.text;
 
-            User user = JsonUtility.FromJson<User>(json);
+            user = JsonUtility.FromJson<User>(json);
             Debug.Log(user.id);
             Debug.Log(user.name);
+            
+            UIController.SetWindow(Screen.MainMenu);
         }
         
         www.Dispose();
