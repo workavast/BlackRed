@@ -4,5 +4,5 @@ public enum Screen
     StartMenu = 1,
     RegistrationScreen = 2,
     EntryScreen = 3,
-
+    MainMenu = 4
 }
