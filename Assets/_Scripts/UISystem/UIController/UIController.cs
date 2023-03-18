@@ -24,6 +24,9 @@ public class UIController : MonoBehaviour
         if (UIScreenRepository.GetScreen<MainMenu>().isActiveAndEnabled)
             UI_Activ = UIScreenRepository.GetScreen<MainMenu>().gameObject;
         else 
+        if (UIScreenRepository.GetScreen<LevelChoiceScreen>().isActiveAndEnabled)
+            UI_Activ = UIScreenRepository.GetScreen<LevelChoiceScreen>().gameObject;
+        else 
         {
             Debug.LogError("Undefined screen or null");
         }
@@ -48,6 +51,8 @@ public class UIController : MonoBehaviour
                 UI_Activ = UIScreenRepository.GetScreen<StartMenu>().gameObject; break;
             case Screen.MainMenu:
                 UI_Activ = UIScreenRepository.GetScreen<MainMenu>().gameObject; break;
+            case Screen.LevelChoiceScreen:
+                UI_Activ = UIScreenRepository.GetScreen<LevelChoiceScreen>().gameObject; break;
             default:
                 Debug.Log("Error: invalid string parameter in _SetWindow(string windowName)"); break;
         }
