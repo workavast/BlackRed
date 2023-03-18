@@ -5417,6 +5417,7 @@ GameObject:
   - component: {fileID: 449665021}
   - component: {fileID: 449665020}
   - component: {fileID: 449665019}
+  - component: {fileID: 449665025}
   m_Layer: 3
   m_Name: MovePlatform
   m_TagString: Untagged
@@ -5449,7 +5450,7 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 4, y: 0.25, z: 4}
+  m_Size: {x: 4, y: 0.5, z: 4}
   m_Center: {x: 2, y: 1, z: -2}
 --- !u!114 &449665020
 MonoBehaviour:
@@ -5744,6 +5745,22 @@ MonoBehaviour:
   m_SelectedFaces: 
   m_SelectedEdges: []
   m_SelectedVertices: 
+--- !u!54 &449665025
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 449665017}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!43 &482315520
 Mesh:
   m_ObjectHideFlags: 0
@@ -29929,7 +29946,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-58828
+  m_Name: pb_Mesh42256
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
