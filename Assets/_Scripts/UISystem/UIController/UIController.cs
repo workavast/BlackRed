@@ -18,11 +18,11 @@ public class UIController : MonoBehaviour
         if (UIScreenRepository.GetScreen<EnteryScreen>().isActiveAndEnabled)
             UI_Activ = UIScreenRepository.GetScreen<EnteryScreen>().gameObject;
         else
-        if (UIScreenRepository.GetScreen<StartMenu>().isActiveAndEnabled)
-            UI_Activ = UIScreenRepository.GetScreen<StartMenu>().gameObject;
+        if (UIScreenRepository.GetScreen<StartMenuScreen>().isActiveAndEnabled)
+            UI_Activ = UIScreenRepository.GetScreen<StartMenuScreen>().gameObject;
         else
-        if (UIScreenRepository.GetScreen<MainMenu>().isActiveAndEnabled)
-            UI_Activ = UIScreenRepository.GetScreen<MainMenu>().gameObject;
+        if (UIScreenRepository.GetScreen<MainMenuScreen>().isActiveAndEnabled)
+            UI_Activ = UIScreenRepository.GetScreen<MainMenuScreen>().gameObject;
         else 
         if (UIScreenRepository.GetScreen<LevelChoiceScreen>().isActiveAndEnabled)
             UI_Activ = UIScreenRepository.GetScreen<LevelChoiceScreen>().gameObject;
@@ -48,13 +48,13 @@ public class UIController : MonoBehaviour
             case Screen.EntryScreen:
                 UI_Activ = UIScreenRepository.GetScreen<EnteryScreen>().gameObject; break;
             case Screen.StartMenu:
-                UI_Activ = UIScreenRepository.GetScreen<StartMenu>().gameObject; break;
+                UI_Activ = UIScreenRepository.GetScreen<StartMenuScreen>().gameObject; break;
             case Screen.MainMenu:
-                UI_Activ = UIScreenRepository.GetScreen<MainMenu>().gameObject; break;
+                UI_Activ = UIScreenRepository.GetScreen<MainMenuScreen>().gameObject; break;
             case Screen.LevelChoiceScreen:
                 UI_Activ = UIScreenRepository.GetScreen<LevelChoiceScreen>().gameObject; break;
             default:
-                Debug.Log("Error: invalid string parameter in _SetWindow(string windowName)"); break;
+                Debug.LogError("Error: invalid string parameter in SetWindow(Screen screen)"); break;
         }
 
         UI_PrevActiv = buffer;

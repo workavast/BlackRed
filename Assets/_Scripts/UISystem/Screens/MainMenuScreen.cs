@@ -3,8 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
-public class StartMenu : UIScreenBase
+public class MainMenuScreen : UIScreenBase
 {
+    [SerializeField] private TMP_Text playerName;
+
+    void OnEnable()
+    {
+        playerName.text = NetworkController.UserName;
+    }
+
     public void _SetWindow(int screen)
     {
         UIController.SetWindow((Screen)screen);
