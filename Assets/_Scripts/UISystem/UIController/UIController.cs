@@ -73,7 +73,15 @@ public class UIController : MonoBehaviour
 
     public static void LoadScene(int sceneNum)
     {
-        SceneManager.LoadScene(sceneNum);
+        if (sceneNum == -1)
+        {
+            int currentSceneNum = SceneManager.GetActiveScene().buildIndex;
+            SceneManager.LoadScene(currentSceneNum, LoadSceneMode.Single);
+        }
+        else
+        {
+            SceneManager.LoadScene(sceneNum);
+        }
     }
     
     public static void Quit()
