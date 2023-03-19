@@ -22,7 +22,6 @@ public class Finish : MonoBehaviour
         {
             UIController.SetWindow(Screen.FinishLevelScreen);
             GhostRecord.StopRecord();
-            Debug.LogError(GhostRecord.CurrentFullTime);
             if (NetworkController.Levels[levelNum - 1].time != 0)
             {
                 if(GhostRecord.CurrentFullTime < NetworkController.Levels[levelNum-1].time)

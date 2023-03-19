@@ -52,7 +52,7 @@ public class NetworkController : MonoBehaviour
     {
         _networkController.StartUserEnterCoroutine(playerName, playerPassword);
         
-        if (playerName == "UserName" && playerPassword == "_playerPassword")
+        if (playerName == "UserName")
             return true;
         else
             return false;
@@ -112,7 +112,7 @@ public class NetworkController : MonoBehaviour
     public static bool UserRegistration(string playerName, string playerPassword)
     {
         _networkController.StartUserRegistrationCoroutine(playerName, playerPassword);
-        if (playerName == UserName)
+        if (playerName == "UserName")
             return true;
         else
             return false;
