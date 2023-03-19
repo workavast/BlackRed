@@ -5,5 +5,7 @@ public enum Screen
     RegistrationScreen = 2,
     EntryScreen = 3,
     MainMenu = 4,
-    LevelChoiceScreen = 5
+    LevelChoiceScreen = 5,
+    GameplayScreen = 6,
+    FinishLevelScreen = 7
 }

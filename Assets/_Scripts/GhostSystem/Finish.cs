@@ -20,6 +20,7 @@ public class Finish : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
+            UIController.SetWindow(Screen.FinishLevelScreen);
             GhostRecord.StopRecord();
             Debug.LogError(GhostRecord.FullTime);
             if (NetworkController.Levels[levelNum - 1].time != 0)

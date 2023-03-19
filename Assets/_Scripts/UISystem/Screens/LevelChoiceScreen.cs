@@ -23,12 +23,12 @@ public class LevelChoiceScreen : UIScreenBase
         if (secondLevel == 0)
             secondLevelTime.text = "не пройдено";
         else
-            secondLevelTime.text = firstLevel.ToString();
+            secondLevelTime.text = secondLevel.ToString();
 
         if (thirdLevel == 0)
             thirdLevelTime.text = "не пройдено";
         else
-            thirdLevelTime.text = firstLevel.ToString();
+            thirdLevelTime.text = thirdLevel.ToString();
     }
 
     public void _SetWindow(int screen)
