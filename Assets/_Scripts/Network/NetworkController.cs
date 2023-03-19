@@ -25,7 +25,8 @@ enum Commands
 {
     UserEnter,
     UserRegistration,
-    UpdateLevelTime
+    UpdateLevelTime,
+    SavePoints
 }
 
 public class NetworkController : MonoBehaviour
@@ -236,4 +237,52 @@ public class NetworkController : MonoBehaviour
         www.Dispose();
     }
     
+    
+    public static void SavePoints(int levelNum, Points points)
+    {
+        _networkController.StartSavePointsCoroutine(user.id, levelNum, points);
+    }
+    
+    private void StartSavePointsCoroutine(int user_id, int levelNum, Points points)
+    {
+        StartCoroutine(SavePointsCoroutine(user_id, levelNum, points));
+    }
+    
+    private IEnumerator SavePointsCoroutine(int user_id, int levelNum, Points points)
+    {
+        string pointsJSON = JsonUtility.ToJson(points);
+        
+        List<IMultipartFormSection> wwwForm = new List<IMultipartFormSection>();
+        wwwForm.Add(new MultipartFormDataSection("Command", Commands.SavePoints.ToString()));
+        wwwForm.Add(new MultipartFormDataSection("user_id", user_id.ToString()));
+        wwwForm.Add(new MultipartFormDataSection("levelNum", levelNum.ToString()));
+        wwwForm.Add(new MultipartFormDataSection("points", pointsJSON));
+
+        UnityWebRequest www = UnityWebRequest.Post("blackredgame.loc", wwwForm);
+        yield return www.SendWebRequest();
+        
+        if (www.error != null)
+        {
+            switch (www.responseCode)
+            {
+                case (520):
+                {
+                    Debug.LogError("Some error, try again");
+                    break;
+                }
+                default:
+                {
+                    Debug.LogError("Unexpected error");
+                    break;
+                }
+            }        
+        }
+        else
+        {
+            Debug.Log("Completed");
+            Debug.LogError( www.downloadHandler.text);
+        }
+        
+        www.Dispose();
+    }
 }

@@ -3,6 +3,34 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[System.Serializable]
+public class Point
+{
+    public float x;
+    public float y;
+    public float z;
+    public float time;
+
+    public Point(float X, float Y, float Z, float Time)
+    {
+        x = X;
+        y = Y;
+        z = Z;
+        time = Time;
+    }
+}
+
+[System.Serializable]
+public class Points
+{
+    public List<Point> points = new List<Point>();
+
+    public void Add(float x, float y, float z, float time)
+    {
+        points.Add(new Point(x,y,z,time));
+    }
+}
+
 public class GhostRecord : MonoBehaviour
 {
     [SerializeField] [Range(1,120)] private float recordFrequency;
@@ -12,8 +40,8 @@ public class GhostRecord : MonoBehaviour
     public static float PreviousFullTime => _previousFullTime;
     private static float _previousFullTime = 0;
     
-    private List<Vector3> _points = new List<Vector3>();
-
+    private static Points _points = new Points();
+    
     private float _timer = 0;
     private float _currentTime = 0;
     private Transform _playerTransform;
@@ -42,7 +70,9 @@ public class GhostRecord : MonoBehaviour
             _currentFullTime += Time.deltaTime;
             if (_currentTime >= _timer)
             {
-                _points.Add(_playerTransform.position);
+                Vector3 currentPos = _playerTransform.position;
+                _points.Add(currentPos.x,currentPos.y,currentPos.z, CurrentFullTime);
+                
                 _currentTime = 0;
             }
             else
@@ -55,5 +85,6 @@ public class GhostRecord : MonoBehaviour
     public static void StopRecord()
     {
         _record = false;
+        NetworkController.SavePoints(1, _points);
     }
 }
