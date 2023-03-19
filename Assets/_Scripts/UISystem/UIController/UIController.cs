@@ -35,6 +35,7 @@ public class UIController : MonoBehaviour
         else 
         {
             Debug.LogError("Undefined screen or null");
+            UI_Activ = null;
         }
 
         UI_PrevActiv = UI_Activ;

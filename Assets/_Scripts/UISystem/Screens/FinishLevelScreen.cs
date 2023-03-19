@@ -11,9 +11,9 @@ public class FinishLevelScreen : UIScreenBase
 
     private void OnEnable()
     {
-        fullLevelTime.text = GhostRecord.FullTime.ToString();
+        fullLevelTime.text = GhostRecord.CurrentFullTime.ToString();
         
-        float difference = GhostRecord.PreviousFullTime - GhostRecord.FullTime;
+        float difference = GhostRecord.PreviousFullTime - GhostRecord.CurrentFullTime;
         
         if(difference > 0)
             timesDifference.color = Color.green;
@@ -21,11 +21,8 @@ public class FinishLevelScreen : UIScreenBase
             timesDifference.color = Color.red;
         
         timesDifference.text = difference.ToString();
-
-        
     }
     
-
     public void _SetWindow(int screen)
     {
         UIController.SetWindow((Screen)screen);

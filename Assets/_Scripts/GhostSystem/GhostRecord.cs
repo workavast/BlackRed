@@ -5,12 +5,15 @@ using UnityEngine;
 
 public class GhostRecord : MonoBehaviour
 {
-    private List<Vector3> _points = new List<Vector3>();
     [SerializeField] [Range(1,120)] private float recordFrequency;
-    public static float FullTime => _fullTime;
-    private static float _fullTime;
+
+    public static float CurrentFullTime => _currentFullTime;
+    private static float _currentFullTime;
     public static float PreviousFullTime => _previousFullTime;
     private static float _previousFullTime = 0;
+    
+    private List<Vector3> _points = new List<Vector3>();
+
     private float _timer = 0;
     private float _currentTime = 0;
     private Transform _playerTransform;
@@ -18,7 +21,7 @@ public class GhostRecord : MonoBehaviour
     
     void OnLevelWasLoaded(int level)
     {
-        _fullTime = 0;
+        _currentFullTime = 0;
         _previousFullTime = NetworkController.Levels[0].time;
         _record = true;
     }
@@ -36,7 +39,7 @@ public class GhostRecord : MonoBehaviour
     {
         if (_record)
         {
-            _fullTime += Time.deltaTime;
+            _currentFullTime += Time.deltaTime;
             if (_currentTime >= _timer)
             {
                 _points.Add(_playerTransform.position);

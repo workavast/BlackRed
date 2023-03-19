@@ -22,15 +22,15 @@ public class Finish : MonoBehaviour
         {
             UIController.SetWindow(Screen.FinishLevelScreen);
             GhostRecord.StopRecord();
-            Debug.LogError(GhostRecord.FullTime);
+            Debug.LogError(GhostRecord.CurrentFullTime);
             if (NetworkController.Levels[levelNum - 1].time != 0)
             {
-                if(GhostRecord.FullTime < NetworkController.Levels[levelNum-1].time)
-                    NetworkController.UpdateLevelTime(levelNum,GhostRecord.FullTime);
+                if(GhostRecord.CurrentFullTime < NetworkController.Levels[levelNum-1].time)
+                    NetworkController.UpdateLevelTime(levelNum,GhostRecord.CurrentFullTime);
             }
             else
             {
-                NetworkController.UpdateLevelTime(levelNum,GhostRecord.FullTime);
+                NetworkController.UpdateLevelTime(levelNum,GhostRecord.CurrentFullTime);
             }
 
         }

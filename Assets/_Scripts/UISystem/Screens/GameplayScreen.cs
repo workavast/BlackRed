@@ -10,7 +10,7 @@ public class GameplayScreen  : UIScreenBase
 
     private void Update()
     {
-        fullLevelTime.text = GhostRecord.FullTime.ToString();
+        fullLevelTime.text = GhostRecord.CurrentFullTime.ToString();
     }
 
     public void _SetWindow(int screen)

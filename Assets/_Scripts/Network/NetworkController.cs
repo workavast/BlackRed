@@ -11,7 +11,6 @@ public class User
 {
     public int id;
     public string name;
-    
     public List<Level> levels = new List<Level>();
 }
 
@@ -28,14 +27,12 @@ enum Commands
     UserRegistration,
     UpdateLevelTime
 }
+
 public class NetworkController : MonoBehaviour
 {
     private static User user;
     public static string UserName => user.name;
-    private static string _playerPassword;
-    private static int _playerID;
     public static List<Level> Levels => user.levels;
-
     private static NetworkController _networkController;
     
     void Start()
@@ -43,12 +40,7 @@ public class NetworkController : MonoBehaviour
         DontDestroyOnLoad(this.gameObject);
         _networkController = this;
     }
-
-    void Update()
-    {
-        
-    }
-
+    
     public static bool UserEnter(string playerName, string playerPassword)
     {
         _networkController.StartUserEnterCoroutine(playerName, playerPassword);
@@ -109,10 +101,11 @@ public class NetworkController : MonoBehaviour
         www.Dispose();
     }
     
+    
     public static bool UserRegistration(string playerName, string playerPassword)
     {
         _networkController.StartUserRegistrationCoroutine(playerName, playerPassword);
-        if (playerName == UserName && playerPassword == _playerPassword)
+        if (playerName == UserName)
             return true;
         else
             return false;
