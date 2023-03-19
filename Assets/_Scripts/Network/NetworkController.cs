@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Numerics;
 using System.Runtime.Serialization.Json;
+using UnityEditorInternal;
 using UnityEngine;
 using UnityEngine.Networking;
 
@@ -80,17 +81,17 @@ public class NetworkController : MonoBehaviour
             {
                 case (401):
                 {
-                    Debug.Log("Not correct password");
+                    Debug.LogError("Not correct password");
                     break;
                 }
                 case (404):
                 {
-                    Debug.Log("This name dont exist");
+                    Debug.LogError("This name dont exist");
                     break;
                 }
                 default:
                 {
-                    Debug.Log("Unexpected error");
+                    Debug.LogError("Unexpected error");
                     break;
                 }
             }
@@ -98,15 +99,9 @@ public class NetworkController : MonoBehaviour
         else
         {
             Debug.Log("Completed");
-            var json = www.downloadHandler.text;
-            Debug.LogError(json);
-            user = JsonUtility.FromJson<User>(json);
             
-            Debug.Log(user.id);
-            Debug.Log(user.name);
-            Debug.Log(user.levels[0]);
-            Debug.Log(user.levels[1]);
-            Debug.Log(user.levels[2]);
+            var json = www.downloadHandler.text;
+            user = JsonUtility.FromJson<User>(json);
             
             UIController.SetWindow(Screen.MainMenu);
         }
@@ -145,17 +140,17 @@ public class NetworkController : MonoBehaviour
             {
                 case (409):
                 {
-                    Debug.Log("This name is occupied");
+                    Debug.LogError("This name is occupied");
                     break;
                 }
                 case (520):
                 {
-                    Debug.Log("Some error, try again");
+                    Debug.LogError("Some error, try again");
                     break;
                 }
                 default:
                 {
-                    Debug.Log("Unexpected error");
+                    Debug.LogError("Unexpected error");
                     break;
                 }
             }        
@@ -163,51 +158,39 @@ public class NetworkController : MonoBehaviour
         else
         {
             Debug.Log("Completed");
+            
             var json = www.downloadHandler.text;
-
             user = JsonUtility.FromJson<User>(json);
-            Debug.Log(user.id);
-            Debug.Log(user.name);
 
             UIController.SetWindow(Screen.MainMenu);
         }
         
         www.Dispose();
     }
-    
-    
+
     
     public static void UpdateLevelTime(int levelNum, float time)
+    {
+        _networkController.StartUpdateLevelTimeCoroutine(user.id, levelNum, time);
+    }
+    
+    private void StartUpdateLevelTimeCoroutine(int user_id, int levelNum, float time)
+    {
+        StartCoroutine(UpdateLevelTimeCoroutine(user_id, levelNum, time));
+    }
+    
+    private IEnumerator UpdateLevelTimeCoroutine(int user_id, int levelNum, float time)
     {
         string levelName;
         switch (levelNum)
         {
-            case 1:
-                levelName = "level_1";
-                break;
-            case 2:
-                levelName = "level_2";
-                break;
-            case 3:
-                levelName = "level_3";
-                break;
-            default: 
-                Debug.LogError("Not exist num");
-                return;
+            case 1: levelName = "level_1"; break;
+            case 2: levelName = "level_2"; break;
+            case 3: levelName = "level_3"; break;
+            default: Debug.LogError("Not exist num"); yield break;
         }
-
-        _networkController.StartUpdateLevelTimeCoroutine(user.id, levelName, time);
-    }
-    
-    private void StartUpdateLevelTimeCoroutine(int user_id, string levelName, float time)
-    {
-        StartCoroutine(UpdateLevelTimeCoroutine(user_id, levelName, time));
-    }
-    
-    private IEnumerator UpdateLevelTimeCoroutine(int user_id, string levelNum, float time)
-    {
+        
         string timeString = time.ToString();
-
         for (int n = 0; n < timeString.Length; n++)
         {
             if (timeString[n] == ',')
@@ -220,11 +203,10 @@ public class NetworkController : MonoBehaviour
         List<IMultipartFormSection> wwwForm = new List<IMultipartFormSection>();
         wwwForm.Add(new MultipartFormDataSection("Command", Commands.UpdateLevelTime.ToString()));
         wwwForm.Add(new MultipartFormDataSection("user_id", user_id.ToString()));
-        wwwForm.Add(new MultipartFormDataSection("levelName", levelNum));
+        wwwForm.Add(new MultipartFormDataSection("levelName", levelName));
         wwwForm.Add(new MultipartFormDataSection("time", timeString));
 
         UnityWebRequest www = UnityWebRequest.Post("blackredgame.loc", wwwForm);
-        
         yield return www.SendWebRequest();
         
         if (www.error != null)
@@ -233,12 +215,12 @@ public class NetworkController : MonoBehaviour
             {
                 case (520):
                 {
-                    Debug.Log("Some error, try again");
+                    Debug.LogError("Some error, try again");
                     break;
                 }
                 default:
                 {
-                    Debug.Log("Unexpected error");
+                    Debug.LogError("Unexpected error");
                     break;
                 }
             }        
@@ -246,8 +228,10 @@ public class NetworkController : MonoBehaviour
         else
         {
             Debug.Log("Completed");
+            
             var json = www.downloadHandler.text;
-            Debug.LogError(json);
+            
+            user.levels[levelNum-1].time = time;
         }
         
         www.Dispose();
