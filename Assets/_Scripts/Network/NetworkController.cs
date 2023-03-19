@@ -37,6 +37,12 @@ public class NetworkController : MonoBehaviour
     
     void Start()
     {
+        if (_networkController != null)
+        {
+            Destroy(this);
+            return;
+        }
+        
         DontDestroyOnLoad(this.gameObject);
         _networkController = this;
     }
@@ -95,7 +101,7 @@ public class NetworkController : MonoBehaviour
             var json = www.downloadHandler.text;
             user = JsonUtility.FromJson<User>(json);
             
-            UIController.SetWindow(Screen.MainMenu);
+            UIController.LoadScene(0);
         }
         
         www.Dispose();
@@ -155,7 +161,7 @@ public class NetworkController : MonoBehaviour
             var json = www.downloadHandler.text;
             user = JsonUtility.FromJson<User>(json);
 
-            UIController.SetWindow(Screen.MainMenu);
+            UIController.LoadScene(0);
         }
         
         www.Dispose();
