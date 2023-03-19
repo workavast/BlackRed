@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class Finish : MonoBehaviour
 {
+    [SerializeField] [Range(1,3)] private int levelNum;
     void Start()
     {
         
@@ -20,6 +21,17 @@ public class Finish : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             GhostRecord.StopRecord();
+            Debug.LogError(GhostRecord.FullTime);
+            if (NetworkController.Levels[levelNum - 1].time != 0)
+            {
+                if(GhostRecord.FullTime < NetworkController.Levels[levelNum-1].time)
+                    NetworkController.UpdateLevelTime(levelNum,GhostRecord.FullTime);
+            }
+            else
+            {
+                NetworkController.UpdateLevelTime(levelNum,GhostRecord.FullTime);
+            }
+
         }
     }
 }

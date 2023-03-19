@@ -6,6 +6,8 @@ public class GhostRecord : MonoBehaviour
 {
     private List<Vector3> _points = new List<Vector3>();
     [SerializeField] [Range(1,120)] private float recordFrequency;
+    private static float _fullTime;
+    public static float FullTime => _fullTime;
     private float _timer = 0;
     private float _currentTime = 0;
     private Transform _playerTransform;
@@ -21,6 +23,7 @@ public class GhostRecord : MonoBehaviour
     {
         if (_record)
         {
+            _fullTime += Time.deltaTime;
             if (_currentTime >= _timer)
             {
                 _points.Add(_playerTransform.position);
