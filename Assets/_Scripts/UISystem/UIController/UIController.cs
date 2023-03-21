@@ -8,8 +8,7 @@ public class UIController : MonoBehaviour
     private static GameObject UI_Activ;
     private static GameObject UI_PrevActiv;
     private static GameObject buffer;
-    private static GameObject currentWorker;
-
+    
     void Start()
     {
         if (UIScreenRepository.GetScreen<RegistrationScreen>().isActiveAndEnabled)

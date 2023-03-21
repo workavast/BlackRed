@@ -1191,6 +1191,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1b2352fa8277f5543ad302cb7eb7741a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  levelsTimes:
+  - {fileID: 7306155151216035508}
+  - {fileID: 1518189432684047613}
+  - {fileID: 4177480997556437862}
   firstLevelTime: {fileID: 7306155151216035508}
   secondLevelTime: {fileID: 1518189432684047613}
   thirdLevelTime: {fileID: 4177480997556437862}

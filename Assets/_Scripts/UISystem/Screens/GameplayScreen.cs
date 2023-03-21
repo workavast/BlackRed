@@ -34,4 +34,3 @@ public class GameplayScreen  : UIScreenBase
         UIController.Quit();
     }
 }
-

@@ -5,30 +5,20 @@ using TMPro;
 
 public class LevelChoiceScreen : UIScreenBase
 {
-    [SerializeField] private TMP_Text firstLevelTime;
-    [SerializeField] private TMP_Text secondLevelTime;
-    [SerializeField] private TMP_Text thirdLevelTime;
+    [SerializeField] private List<TMP_Text> levelsTimes;
 
     void OnEnable()
     {
-        float firstLevel = NetworkController.Levels[0].time;
-        float secondLevel = NetworkController.Levels[1].time;
-        float thirdLevel = NetworkController.Levels[2].time;
-
-        if (firstLevel == 0)
-            firstLevelTime.text = "не пройдено";
-        else
-            firstLevelTime.text = firstLevel.ToString();
+        if(levelsTimes.Count != NetworkController.Levels.Count)
+            Debug.LogError("Attention!: levelsTimes.Count != NetworkController.Levels.Count");
         
-        if (secondLevel == 0)
-            secondLevelTime.text = "не пройдено";
-        else
-            secondLevelTime.text = secondLevel.ToString();
-
-        if (thirdLevel == 0)
-            thirdLevelTime.text = "не пройдено";
-        else
-            thirdLevelTime.text = thirdLevel.ToString();
+        for (int i = 0; i < levelsTimes.Count; i++)
+        {
+            if(NetworkController.Levels[i].time == 0)
+                levelsTimes[i].text = "не пройдено";
+            else
+                levelsTimes[i].text = NetworkController.Levels[i].time.ToString();
+        }
     }
 
     public void _SetWindow(int screen)

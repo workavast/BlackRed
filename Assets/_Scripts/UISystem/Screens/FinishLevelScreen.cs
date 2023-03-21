@@ -16,13 +16,24 @@ public class FinishLevelScreen : UIScreenBase
 
         fullLevelTime.text = _ghostRecord.CurrentFullTime.ToString();
         
+        float difference = _ghostRecord.CurrentFullTime - _ghostRecord.PreviousFullTime;
         
-        if(difference > 0)
+        if(difference < 0)
             timesDifference.color = Color.green;
         else
             timesDifference.color = Color.red;
-        
-        timesDifference.text = difference.ToString();
+
+        if (_ghostRecord.PreviousFullTime == 0 || difference == 0)
+        {
+            timesDifference.text = "";
+        }
+        else
+        {
+            if (difference > 0)
+                timesDifference.text = "+" + difference.ToString();
+            else
+                timesDifference.text = difference.ToString();  
+        }
     }
     
     public void _SetWindow(int screen)
