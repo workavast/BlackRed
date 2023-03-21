@@ -8,12 +8,14 @@ public class FinishLevelScreen : UIScreenBase
 {
     [SerializeField] private TMP_Text fullLevelTime;
     [SerializeField] private TMP_Text timesDifference;
-
+    private GhostRecord _ghostRecord;
+    
     private void OnEnable()
     {
-        fullLevelTime.text = GhostRecord.CurrentFullTime.ToString();
+        _ghostRecord = GhostRecord.GhostRecorder;
+
+        fullLevelTime.text = _ghostRecord.CurrentFullTime.ToString();
         
-        float difference = GhostRecord.PreviousFullTime - GhostRecord.CurrentFullTime;
         
         if(difference > 0)
             timesDifference.color = Color.green;

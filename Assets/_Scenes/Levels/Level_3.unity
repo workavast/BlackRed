@@ -6716,7 +6716,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b86e68aa3b21394abb7eec71923f498, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  levelNum: 3
 --- !u!43 &538122545
 Mesh:
   m_ObjectHideFlags: 0
@@ -32482,6 +32481,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3763750430921409464, guid: e63f9a2259623d64fb499bbd2e695bea, type: 3}
+      propertyPath: levelNum
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 3763750430921409465, guid: e63f9a2259623d64fb499bbd2e695bea, type: 3}
       propertyPath: m_Name
       value: GhostRecord
