@@ -9,7 +9,8 @@ enum Commands
     UserEnter,
     UserRegistration,
     UpdateLevelTime,
-    SavePoints
+    SavePoints,
+    TakePoints
 }
 
 public class NetworkController : MonoBehaviour
@@ -18,7 +19,10 @@ public class NetworkController : MonoBehaviour
     public static string UserName => user.name;
     public static List<Level> Levels => user.levels;
     private static NetworkController _networkController;
-    
+
+    private static Points _playerPoints;
+    public static List<Point> PlayerPoints => _playerPoints.points;
+
     void Start()
     {
         if (_networkController != null)
@@ -136,7 +140,7 @@ public class NetworkController : MonoBehaviour
                     Debug.LogError("Unexpected error");
                     break;
                 }
-            }        
+            }
         }
         else
         {
@@ -206,7 +210,7 @@ public class NetworkController : MonoBehaviour
                     Debug.LogError("Unexpected error");
                     break;
                 }
-            }        
+            }
         }
         else
         {
@@ -258,12 +262,62 @@ public class NetworkController : MonoBehaviour
                     Debug.LogError("Unexpected error");
                     break;
                 }
-            }        
+            }
         }
         else
         {
             Debug.Log("Completed");
             Debug.LogError( www.downloadHandler.text);
+        }
+        
+        www.Dispose();
+    }
+    
+    
+    public static void TakePoints(System.Action<int> funcComplete, int levelNum)
+    {
+        _networkController.StartTakePointsCoroutine(funcComplete, user.id, levelNum);
+    }
+    
+    private void StartTakePointsCoroutine(System.Action<int> funcComplete, int user_id, int levelNum)
+    {
+        StartCoroutine(TakePointsCoroutine(funcComplete, user_id, levelNum));
+    }
+
+    private IEnumerator TakePointsCoroutine(System.Action<int> funcComplete, int user_id, int levelNum)
+    {
+        List<IMultipartFormSection> wwwForm = new List<IMultipartFormSection>();
+        wwwForm.Add(new MultipartFormDataSection("Command", Commands.TakePoints.ToString()));
+        wwwForm.Add(new MultipartFormDataSection("user_id", user_id.ToString()));
+        wwwForm.Add(new MultipartFormDataSection("levelNum", levelNum.ToString()));
+
+        UnityWebRequest www = UnityWebRequest.Post("blackredgame.loc", wwwForm);
+        yield return www.SendWebRequest();
+        
+        if (www.error != null)
+        {
+            switch (www.responseCode)
+            {
+                case (520):
+                {
+                    Debug.LogError("Some error, try again");
+                    break;
+                }
+                default:
+                {
+                    Debug.LogError("Unexpected error");
+                    break;
+                }
+            }
+        }
+        else
+        {
+            funcComplete.Invoke(levelNum);
+            
+            Debug.Log("Completed");
+            
+            string json = www.downloadHandler.text;
+            _playerPoints = JsonUtility.FromJson<Points>(json);
         }
         
         www.Dispose();

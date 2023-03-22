@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class LevelChoiceScreen : UIScreenBase
 {
@@ -31,6 +32,41 @@ public class LevelChoiceScreen : UIScreenBase
         UIController.LoadScene(sceneNum);
     }
 
+    public void _LoadLevel(int levelNum)
+    {
+        NetworkController.TakePoints(TakePointsComplete, levelNum);
+    }
+
+    private void TakePointsComplete(int levelNum)
+    {
+        int n;
+        switch (levelNum)
+        {
+            case 1:
+            {
+                n = 2;
+                break;
+            }
+            case 2:
+            {
+                n = 3;
+                break;
+            }
+            case 3:
+            {
+                n = 4;
+                break;
+            }
+            default:
+            {
+                Debug.LogError("Unexpected level number");
+                return;
+            }
+        }
+        
+        _LoadScene(n);
+    }
+    
     public void _Quit()
     {
         UIController.Quit();

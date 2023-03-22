@@ -793,12 +793,12 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 6528623586901308564}
         m_TargetAssemblyTypeName: LevelChoiceScreen, Assembly-CSharp
-        m_MethodName: _LoadScene
+        m_MethodName: _LoadLevel
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 2
+          m_IntArgument: 1
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -926,12 +926,12 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 6528623586901308564}
         m_TargetAssemblyTypeName: LevelChoiceScreen, Assembly-CSharp
-        m_MethodName: _LoadScene
+        m_MethodName: _LoadLevel
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 3
+          m_IntArgument: 2
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -1195,9 +1195,6 @@ MonoBehaviour:
   - {fileID: 7306155151216035508}
   - {fileID: 1518189432684047613}
   - {fileID: 4177480997556437862}
-  firstLevelTime: {fileID: 7306155151216035508}
-  secondLevelTime: {fileID: 1518189432684047613}
-  thirdLevelTime: {fileID: 4177480997556437862}
 --- !u!1 &5315596914186203352
 GameObject:
   m_ObjectHideFlags: 0
@@ -1797,12 +1794,12 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 6528623586901308564}
         m_TargetAssemblyTypeName: LevelChoiceScreen, Assembly-CSharp
-        m_MethodName: _LoadScene
+        m_MethodName: _LoadLevel
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 4
+          m_IntArgument: 3
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
