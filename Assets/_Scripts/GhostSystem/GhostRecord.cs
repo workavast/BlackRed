@@ -1,37 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
-using SQL_Points;
-
-namespace SQL_Points
-{
-    [System.Serializable]
-    public class Point
-    {
-        public float x;
-        public float y;
-        public float z;
-        public float time;
-
-        public Point(float xCord, float yCord, float zCord, float timeMoment)
-        {
-            x = xCord;
-            y = yCord;
-            z = zCord;
-            time = timeMoment;
-        }
-    }
-
-    [System.Serializable]
-    public class Points
-    {
-        public List<Point> points = new List<Point>();
-
-        public void Add(float x, float y, float z, float time)
-        {
-            points.Add(new Point(x,y,z,time));
-        }
-    }
-}
+using SQL_Classes;
 
 public class GhostRecord
 {

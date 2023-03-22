@@ -2,7 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using SQL_Points;
+using SQL_Classes;
 
 [Serializable]
 public class GhostReplay
