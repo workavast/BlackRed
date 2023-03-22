@@ -10,7 +10,7 @@ public class Finish : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             UIController.SetWindow(Screen.FinishLevelScreen);
-            GhostRecord.GhostRecorder.StopRecord();
+            GhostSystem.This.Finish();
         }
     }
 }

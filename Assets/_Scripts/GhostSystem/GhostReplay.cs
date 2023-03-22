@@ -1,17 +1,32 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using SQL_Points;
 
-public class GhostReplay : MonoBehaviour
+[Serializable]
+public class GhostReplay
 {
-    // Start is called before the first frame update
-    void Start()
+    [SerializeField] private int ghostsNumber;
+    private Points _points;
+    private int _levelNum;
+    
+    public void OnAwake()
+    {
+        _levelNum = GhostSystem.This.LevelNum;
+    }
+
+    public void OnStart()
     {
         
     }
-
-    // Update is called once per frame
-    void Update()
+    
+    public void OnUpdate()
+    {
+        
+    }
+    
+    public void StopReplay()
     {
         
     }

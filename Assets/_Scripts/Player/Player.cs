@@ -97,8 +97,13 @@ public class Player : MonoBehaviour, ICastSphereTake
     [SerializeField] private CastSphere castSphere;
 
     private InputController _inputController;
+
+    public static Player This;
+    
     private void Awake()
     {
+        This = this;
+        
         mainMove.OnAwake(this.gameObject);
         jump.OnAwake(this.gameObject);
         fall.OnAwake(this.gameObject);

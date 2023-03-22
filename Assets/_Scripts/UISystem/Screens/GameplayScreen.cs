@@ -7,11 +7,11 @@ using TMPro;
 public class GameplayScreen  : UIScreenBase
 {
     [SerializeField] private TMP_Text fullLevelTime;
-    private GhostRecord _ghostRecord;
+    private GhostSystem _ghostRecord;
     
     private void Start()
     {
-        _ghostRecord = GhostRecord.GhostRecorder;
+        _ghostRecord = GhostSystem.This;
     }
 
     private void Update()

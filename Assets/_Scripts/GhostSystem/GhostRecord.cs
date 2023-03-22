@@ -33,47 +33,38 @@ namespace SQL_Points
     }
 }
 
-public class GhostRecord : MonoBehaviour
+public class GhostRecord
 {
     [SerializeField] [Range(1,120)] private float recordFrequency;
 
-    public static GhostRecord GhostRecorder;
-    [SerializeField] [Range(1,3)] private int levelNum;
-    
-    public float CurrentFullTime => _currentFullTime;
-    private float _currentFullTime;
-    public float PreviousFullTime => _previousFullTime;
-    private float _previousFullTime = 0;
-    
-    private Points _points = new Points();
-    
+    private GhostSystem _ghostSystem;
+    private int _levelNum;
     private float _timer = 0;
     private float _currentTime = 0;
     private Transform _playerTransform;
+    private Points _points = new Points();
     private bool _record = true;
     
-    private void Awake()
+    public void OnAwake()
     {
-        GhostRecorder = this;
+        _levelNum = GhostSystem.This.LevelNum;
+        _ghostSystem = GhostSystem.This;
     }
 
-    void Start()
+    public void OnStart()
     {
-        _previousFullTime = NetworkController.Levels[levelNum - 1].time;
-        
         _timer = 60 / recordFrequency;
-        _playerTransform = GameObject.Find("Player").GetComponent<Transform>();
+        _playerTransform = Player.This.transform;
     }
     
-    void Update()
+    public void OnUpdate()
     {
         if (_record)
         {
-            _currentFullTime += Time.deltaTime;
             if (_currentTime >= _timer)
             {
                 Vector3 currentPos = _playerTransform.position;
-                _points.Add(currentPos.x,currentPos.y,currentPos.z, CurrentFullTime);
+                _points.Add(currentPos.x,currentPos.y,currentPos.z, _ghostSystem.CurrentFullTime);
                 
                 _currentTime = 0;
             }
@@ -88,19 +79,15 @@ public class GhostRecord : MonoBehaviour
     {
         _record = false;
         
-        
-        NetworkController.SavePoints(levelNum, _points);
-
-        
-        if (NetworkController.Levels[levelNum - 1].time != 0)
+        NetworkController.SavePoints(_levelNum, _points);
+        if (NetworkController.Levels[_levelNum - 1].time != 0)
         {
-            if(CurrentFullTime < NetworkController.Levels[levelNum-1].time)
-                NetworkController.UpdateLevelTime(levelNum, CurrentFullTime);
+            if(_ghostSystem.CurrentFullTime < NetworkController.Levels[_levelNum-1].time)
+                NetworkController.UpdateLevelTime(_levelNum, _ghostSystem.CurrentFullTime);
         }
         else
         {
-            NetworkController.UpdateLevelTime(levelNum, CurrentFullTime);
+            NetworkController.UpdateLevelTime(_levelNum, _ghostSystem.CurrentFullTime);
         }
-        
     }
 }
