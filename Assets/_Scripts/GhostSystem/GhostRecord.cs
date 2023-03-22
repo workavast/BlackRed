@@ -1,7 +1,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 using SQL_Classes;
+using System;
 
+[Serializable]
 public class GhostRecord
 {
     [SerializeField] [Range(1,120)] private float recordFrequency;
