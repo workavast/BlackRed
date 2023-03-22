@@ -20,7 +20,7 @@ public class NetworkController : MonoBehaviour
     public static List<Level> Levels => user.levels;
     private static NetworkController _networkController;
 
-    private static Points _playerPoints;
+    private static Points _playerPoints = new Points();
     public static List<Point> PlayerPoints => _playerPoints.points;
 
     void Start()
@@ -267,6 +267,7 @@ public class NetworkController : MonoBehaviour
         else
         {
             Debug.Log("Completed");
+            _playerPoints = points;
             Debug.LogError( www.downloadHandler.text);
         }
         
@@ -312,12 +313,12 @@ public class NetworkController : MonoBehaviour
         }
         else
         {
-            funcComplete.Invoke(levelNum);
-            
             Debug.Log("Completed");
             
             string json = www.downloadHandler.text;
             _playerPoints = JsonUtility.FromJson<Points>(json);
+            
+            funcComplete.Invoke(levelNum);
         }
         
         www.Dispose();

@@ -22,11 +22,15 @@ public class GhostReplay
         _ghostSystem = GhostSystem.This;
         _levelNum = GhostSystem.This.LevelNum;
         _points = NetworkController.PlayerPoints;
+
+        if (_points.Count == 0)
+            _replay = false;
     }
 
     public void OnStart()
     {
-        playerGhost = GameObject.Instantiate(playerGhostPrefab);
+        if(_replay)
+            playerGhost = GameObject.Instantiate(playerGhostPrefab);
     }
     
     public void OnUpdate()

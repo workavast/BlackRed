@@ -34,7 +34,10 @@ public class LevelChoiceScreen : UIScreenBase
 
     public void _LoadLevel(int levelNum)
     {
-        NetworkController.TakePoints(TakePointsComplete, levelNum);
+        if (NetworkController.Levels[levelNum - 1].time != 0)
+            NetworkController.TakePoints(TakePointsComplete, levelNum);
+        else
+            TakePointsComplete(levelNum);
     }
 
     private void TakePointsComplete(int levelNum)

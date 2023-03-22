@@ -50,15 +50,10 @@ public class GhostRecord
     {
         _record = false;
         
+        if(_ghostSystem.CurrentFullTime > NetworkController.Levels[_levelNum - 1].time)
+            return;
+        
         NetworkController.SavePoints(_levelNum, _points);
-        if (NetworkController.Levels[_levelNum - 1].time != 0)
-        {
-            if(_ghostSystem.CurrentFullTime < NetworkController.Levels[_levelNum-1].time)
-                NetworkController.UpdateLevelTime(_levelNum, _ghostSystem.CurrentFullTime);
-        }
-        else
-        {
-            NetworkController.UpdateLevelTime(_levelNum, _ghostSystem.CurrentFullTime);
-        }
+        NetworkController.UpdateLevelTime(_levelNum, _ghostSystem.CurrentFullTime);
     }
 }
