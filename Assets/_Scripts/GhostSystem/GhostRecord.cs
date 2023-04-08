@@ -12,7 +12,9 @@ public class GhostRecord
     private int _levelNum;
     private float _timer = 0;
     private float _currentTime = 0;
-    private Transform _playerTransform;
+    private Transform _ghostRecordPoint;
+    private Vector3 _prevPlayerPosition;
+    private Vector3 _prevDirection;
     private Points _points = new Points();
     private bool _record = true;
     
@@ -24,8 +26,10 @@ public class GhostRecord
 
     public void OnStart()
     {
-        _timer = 60 / recordFrequency;
-        _playerTransform = Player.This.transform;
+        _timer = 1 / recordFrequency;
+        _ghostRecordPoint = Player.This.GhostRecordPoint;
+        _prevPlayerPosition = _ghostRecordPoint.position;
+        _prevDirection = (_ghostRecordPoint.position - _prevPlayerPosition).normalized;
     }
     
     public void OnUpdate()
@@ -34,15 +38,26 @@ public class GhostRecord
         {
             if (_currentTime >= _timer)
             {
-                Vector3 currentPos = _playerTransform.position;
-                _points.Add(currentPos.x,currentPos.y,currentPos.z, _ghostSystem.CurrentFullTime);
+                Vector3 direction = (_ghostRecordPoint.position - _prevPlayerPosition).normalized;
+
+                if (_prevDirection != direction)
+                {
+                    Vector3 currentPos = _ghostRecordPoint.position;
+                    _points.Add(currentPos.x,currentPos.y,currentPos.z, _ghostSystem.CurrentFullTime);
                 
-                _currentTime = 0;
+                    _currentTime = 0;
+                    
+                    _prevPlayerPosition = _ghostRecordPoint.position;
+
+                }
+
+                _prevDirection = direction.normalized;
             }
             else
             {
                 _currentTime += Time.deltaTime;
             }
+            
         }
     }
 

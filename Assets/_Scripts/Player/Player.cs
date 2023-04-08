@@ -99,6 +99,8 @@ public class Player : MonoBehaviour, ICastSphereTake
 
     public static Player This;
     
+    [field: SerializeField] public Transform GhostRecordPoint { get; private set; }
+    
     private void Awake()
     {
         This = this;
