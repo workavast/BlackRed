@@ -5,9 +5,10 @@ using UnityEngine;
 public class GhostSystem : MonoBehaviour
 {
     [SerializeField] [Range(1,3)] private int levelNum;
+    [SerializeField] [Range(1,5)] private int ghostsNumber;
     [SerializeField] private GhostRecord ghostRecord;
     [SerializeField] private GhostReplay ghostReplay;
-    
+
     public float CurrentFullTime => _currentFullTime;
     private float _currentFullTime;
     public float PreviousFullTime => _previousFullTime;
@@ -26,7 +27,7 @@ public class GhostSystem : MonoBehaviour
     
     void Start()
     {
-        _previousFullTime = NetworkController.Levels[levelNum - 1].time;
+        _previousFullTime = NetworkController.Instance.Levels[levelNum - 1].time;
         ghostRecord.OnStart();
         ghostReplay.OnStart();
     }

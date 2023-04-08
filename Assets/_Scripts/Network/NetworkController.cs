@@ -18,12 +18,14 @@ public class NetworkController : MonoBehaviour
 {
     public static NetworkController Instance { get; private set;} 
     
-    private static User user;
-    public static string UserName => user.name;
-    public static List<Level> Levels => user.levels;
+    private User user;
+    public string UserName => user.name;
+    public List<Level> Levels => user.levels;
 
-    private static Points _playerPoints = new Points();
-    public static List<Point> PlayerPoints => _playerPoints.points;
+    private Points _playerPoints = new Points();
+    public List<Point> PlayerPoints => _playerPoints.points;
+    
+    public List<Points> OtherPlayersPoints { get; private set; }
 
     void Start()
     {
@@ -35,6 +37,8 @@ public class NetworkController : MonoBehaviour
         
         DontDestroyOnLoad(this.gameObject);
         Instance = this;
+
+        OtherPlayersPoints = new List<Points>();
     }
     
     public void UserEnter(string playerName, string playerPassword)
@@ -341,6 +345,10 @@ public class NetworkController : MonoBehaviour
         else
         {
             string json = www.downloadHandler.text;
+            
+            OtherPlayersPoints.Add(new Points());
+            OtherPlayersPoints[0] = JsonUtility.FromJson<Points>(json);
+
             Debug.Log(json);
         }
         

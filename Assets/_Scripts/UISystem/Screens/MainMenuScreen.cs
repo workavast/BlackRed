@@ -9,7 +9,7 @@ public class MainMenuScreen : UIScreenBase
 
     void OnEnable()
     {
-        playerName.text = NetworkController.UserName;
+        playerName.text = NetworkController.Instance.UserName;
     }
 
     public void _SetWindow(int screen)

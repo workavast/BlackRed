@@ -23,6 +23,7 @@ namespace SQL_Classes
     [Serializable]
     public class Point
     {
+        public Vector3 Position => new Vector3(x, y, z);
         public float x;
         public float y;
         public float z;
@@ -34,11 +35,6 @@ namespace SQL_Classes
             y = yCord;
             z = zCord;
             time = timeMoment;
-        }
-        
-        public Vector3 TakePos()
-        {
-            return new Vector3(x, y, z);
         }
     }
 

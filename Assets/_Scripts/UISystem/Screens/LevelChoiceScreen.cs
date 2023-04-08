@@ -10,15 +10,15 @@ public class LevelChoiceScreen : UIScreenBase
 
     void OnEnable()
     {
-        if(levelsTimes.Count != NetworkController.Levels.Count)
+        if(levelsTimes.Count != NetworkController.Instance.Levels.Count)
             Debug.LogError("Attention!: levelsTimes.Count != NetworkController.Levels.Count");
         
         for (int i = 0; i < levelsTimes.Count; i++)
         {
-            if(NetworkController.Levels[i].time == 0)
+            if(NetworkController.Instance.Levels[i].time == 0)
                 levelsTimes[i].text = "не пройдено";
             else
-                levelsTimes[i].text = NetworkController.Levels[i].time.ToString();
+                levelsTimes[i].text = NetworkController.Instance.Levels[i].time.ToString();
         }
     }
 
@@ -34,10 +34,10 @@ public class LevelChoiceScreen : UIScreenBase
 
     public void _LoadLevel(int levelNum)
     {
-        if (NetworkController.Levels[levelNum - 1].time != 0)
+        if (NetworkController.Instance.Levels[levelNum - 1].time != 0)
         {
             NetworkController.Instance.TakePoints(TakePointsComplete, levelNum);
-            NetworkController.Instance.TakeNearWay(Buffer, levelNum, NetworkController.Levels[levelNum - 1].time);
+            NetworkController.Instance.TakeNearWay(Buffer, levelNum, NetworkController.Instance.Levels[levelNum - 1].time);
         }
         else
             TakePointsComplete(levelNum);
