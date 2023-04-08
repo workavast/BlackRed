@@ -35,7 +35,10 @@ public class LevelChoiceScreen : UIScreenBase
     public void _LoadLevel(int levelNum)
     {
         if (NetworkController.Levels[levelNum - 1].time != 0)
+        {
             NetworkController.TakePoints(TakePointsComplete, levelNum);
+            NetworkController.TakeNearWay(Buffer, levelNum, NetworkController.Levels[levelNum - 1].time);
+        }
         else
             TakePointsComplete(levelNum);
     }
@@ -69,7 +72,11 @@ public class LevelChoiceScreen : UIScreenBase
         
         _LoadScene(n);
     }
-    
+
+    private void Buffer(int levelNum)
+    {
+    }
+
     public void _Quit()
     {
         UIController.Quit();

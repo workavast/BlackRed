@@ -10,7 +10,8 @@ enum Commands
     UserRegistration,
     UpdateLevelTime,
     SavePoints,
-    TakePoints
+    TakePoints,
+    TakeNearWay
 }
 
 public class NetworkController : MonoBehaviour
@@ -84,8 +85,6 @@ public class NetworkController : MonoBehaviour
         }
         else
         {
-            Debug.Log("Completed");
-            
             var json = www.downloadHandler.text;
             user = JsonUtility.FromJson<User>(json);
             
@@ -144,8 +143,6 @@ public class NetworkController : MonoBehaviour
         }
         else
         {
-            Debug.Log("Completed");
-            
             var json = www.downloadHandler.text;
             user = JsonUtility.FromJson<User>(json);
 
@@ -214,8 +211,6 @@ public class NetworkController : MonoBehaviour
         }
         else
         {
-            Debug.Log("Completed");
-            
             var json = www.downloadHandler.text;
             
             user.levels[levelNum-1].time = time;
@@ -266,7 +261,6 @@ public class NetworkController : MonoBehaviour
         }
         else
         {
-            Debug.Log("Completed");
             _playerPoints = points;
             Debug.LogError( www.downloadHandler.text);
         }
@@ -313,12 +307,81 @@ public class NetworkController : MonoBehaviour
         }
         else
         {
-            Debug.Log("Completed");
-            
             string json = www.downloadHandler.text;
             _playerPoints = JsonUtility.FromJson<Points>(json);
             
             funcComplete.Invoke(levelNum);
+        }
+        
+        www.Dispose();
+    }
+    
+    
+    
+    public static void TakeNearWay(System.Action<int> funcComplete, int levelNum, float time)
+    {
+        _networkController.StartTakeNearWayCoroutine(funcComplete, levelNum, time);
+    }
+    
+    private void StartTakeNearWayCoroutine(System.Action<int> funcComplete, int levelNum, float time)
+    {
+        StartCoroutine(TakeNearWayCoroutine(funcComplete, levelNum, time));
+    }
+
+    private IEnumerator TakeNearWayCoroutine(System.Action<int> funcComplete, int levelNum, float time)
+    {
+        string levelName;
+        switch (levelNum)
+        {
+            case 1: levelName = "level_1"; break;
+            case 2: levelName = "level_2"; break;
+            case 3: levelName = "level_3"; break;
+            default: Debug.LogError("Not exist num"); yield break;
+        }
+        
+        string timeString = time.ToString();
+        for (int n = 0; n < timeString.Length; n++)
+        {
+            if (timeString[n] == ',')
+            {
+                timeString = timeString.Remove(n,1);
+                timeString = timeString.Insert(n,".");
+            }
+        }
+        
+        List<IMultipartFormSection> wwwForm = new List<IMultipartFormSection>();
+        wwwForm.Add(new MultipartFormDataSection("Command", Commands.TakeNearWay.ToString()));
+        wwwForm.Add(new MultipartFormDataSection("levelNum", levelNum.ToString()));
+        wwwForm.Add(new MultipartFormDataSection("levelName", levelName));
+        wwwForm.Add(new MultipartFormDataSection("time", timeString));
+
+        UnityWebRequest www = UnityWebRequest.Post("blackredgame.loc", wwwForm);
+        yield return www.SendWebRequest();
+        
+        if (www.error != null)
+        {
+            switch (www.responseCode)
+            {
+                case (520):
+                {
+                    Debug.LogError("Some error, try again");
+                    break;
+                }
+                default:
+                {
+                    Debug.LogError("Unexpected error");
+                    string json = www.downloadHandler.text;
+                    Debug.Log(json);
+                    break;
+                }
+            }
+        }
+        else
+        {
+            string json = www.downloadHandler.text;
+            Debug.Log(json);
+            //_playerPoints = JsonUtility.FromJson<Points>(json);
+            //funcComplete.Invoke(levelNum);
         }
         
         www.Dispose();
