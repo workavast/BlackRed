@@ -22,16 +22,7 @@ public class RegistrationScreen : UIScreenBase
     {
         if (playerName.text.Length > 0 && playerPassword.text.Length > 0)
         {
-            bool playerRegistered= NetworkController.UserRegistration(playerName.text, playerPassword.text);
-
-            if (playerRegistered)
-            {
-                Debug.Log("You are registered");
-            }
-            else
-            {
-                Debug.Log("Error with entered data");
-            }
+            NetworkController.Instance.UserRegistration(playerName.text, playerPassword.text);
         }
     }
 }

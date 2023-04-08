@@ -36,8 +36,8 @@ public class LevelChoiceScreen : UIScreenBase
     {
         if (NetworkController.Levels[levelNum - 1].time != 0)
         {
-            NetworkController.TakePoints(TakePointsComplete, levelNum);
-            NetworkController.TakeNearWay(Buffer, levelNum, NetworkController.Levels[levelNum - 1].time);
+            NetworkController.Instance.TakePoints(TakePointsComplete, levelNum);
+            NetworkController.Instance.TakeNearWay(Buffer, levelNum, NetworkController.Levels[levelNum - 1].time);
         }
         else
             TakePointsComplete(levelNum);

@@ -22,16 +22,7 @@ public class EnteryScreen : UIScreenBase
     {
         if (playerName.text.Length > 0 && playerPassword.text.Length > 0)
         {
-            bool playerEntered = NetworkController.UserEnter(playerName.text, playerPassword.text);
-
-            if (playerEntered)
-            {
-                Debug.Log("You are entered");
-            }
-            else
-            {
-                Debug.Log("Error with entered data");
-            }
+             NetworkController.Instance.UserEnter(playerName.text, playerPassword.text);
         }
     }
 }

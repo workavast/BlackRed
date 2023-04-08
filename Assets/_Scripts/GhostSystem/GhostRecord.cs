@@ -68,7 +68,7 @@ public class GhostRecord
         if(_ghostSystem.CurrentFullTime > NetworkController.Levels[_levelNum - 1].time)
             return;
         
-        NetworkController.SavePoints(_levelNum, _points);
-        NetworkController.UpdateLevelTime(_levelNum, _ghostSystem.CurrentFullTime);
+        NetworkController.Instance.SavePoints(_levelNum, _points);
+        NetworkController.Instance.UpdateLevelTime(_levelNum, _ghostSystem.CurrentFullTime);
     }
 }

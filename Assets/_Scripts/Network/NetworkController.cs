@@ -16,41 +16,32 @@ enum Commands
 
 public class NetworkController : MonoBehaviour
 {
+    public static NetworkController Instance { get; private set;} 
+    
     private static User user;
     public static string UserName => user.name;
     public static List<Level> Levels => user.levels;
-    private static NetworkController _networkController;
 
     private static Points _playerPoints = new Points();
     public static List<Point> PlayerPoints => _playerPoints.points;
 
     void Start()
     {
-        if (_networkController != null)
+        if (Instance != null)
         {
             Destroy(this);
             return;
         }
         
         DontDestroyOnLoad(this.gameObject);
-        _networkController = this;
+        Instance = this;
     }
     
-    public static bool UserEnter(string playerName, string playerPassword)
-    {
-        _networkController.StartUserEnterCoroutine(playerName, playerPassword);
-        
-        if (playerName == "UserName")
-            return true;
-        else
-            return false;
-    }
-
-    private void StartUserEnterCoroutine(string playerName, string playerPassword)
+    public void UserEnter(string playerName, string playerPassword)
     {
         StartCoroutine(UserEnterCoroutine(playerName, playerPassword));
     }
-    
+
     private IEnumerator UserEnterCoroutine(string playerName, string playerPassword)
     {
         List<IMultipartFormSection> wwwForm = new List<IMultipartFormSection>();
@@ -95,16 +86,7 @@ public class NetworkController : MonoBehaviour
     }
     
     
-    public static bool UserRegistration(string playerName, string playerPassword)
-    {
-        _networkController.StartUserRegistrationCoroutine(playerName, playerPassword);
-        if (playerName == "UserName")
-            return true;
-        else
-            return false;
-    }
-    
-    private void StartUserRegistrationCoroutine(string playerName, string playerPassword)
+    public void UserRegistration(string playerName, string playerPassword)
     {
         StartCoroutine(UserRegistrationCoroutine(playerName, playerPassword));
     }
@@ -153,14 +135,9 @@ public class NetworkController : MonoBehaviour
     }
 
     
-    public static void UpdateLevelTime(int levelNum, float time)
+    public void UpdateLevelTime(int levelNum, float time)
     {
-        _networkController.StartUpdateLevelTimeCoroutine(user.id, levelNum, time);
-    }
-    
-    private void StartUpdateLevelTimeCoroutine(int user_id, int levelNum, float time)
-    {
-        StartCoroutine(UpdateLevelTimeCoroutine(user_id, levelNum, time));
+        StartCoroutine(UpdateLevelTimeCoroutine(user.id, levelNum, time));
     }
     
     private IEnumerator UpdateLevelTimeCoroutine(int user_id, int levelNum, float time)
@@ -220,14 +197,9 @@ public class NetworkController : MonoBehaviour
     }
     
     
-    public static void SavePoints(int levelNum, Points points)
+    public void SavePoints(int levelNum, Points points)
     {
-        _networkController.StartSavePointsCoroutine(user.id, levelNum, points);
-    }
-    
-    private void StartSavePointsCoroutine(int user_id, int levelNum, Points points)
-    {
-        StartCoroutine(SavePointsCoroutine(user_id, levelNum, points));
+        StartCoroutine(SavePointsCoroutine(user.id, levelNum, points));
     }
     
     private IEnumerator SavePointsCoroutine(int user_id, int levelNum, Points points)
@@ -269,14 +241,9 @@ public class NetworkController : MonoBehaviour
     }
     
     
-    public static void TakePoints(System.Action<int> funcComplete, int levelNum)
+    public void TakePoints(System.Action<int> funcComplete, int levelNum)
     {
-        _networkController.StartTakePointsCoroutine(funcComplete, user.id, levelNum);
-    }
-    
-    private void StartTakePointsCoroutine(System.Action<int> funcComplete, int user_id, int levelNum)
-    {
-        StartCoroutine(TakePointsCoroutine(funcComplete, user_id, levelNum));
+        StartCoroutine(TakePointsCoroutine(funcComplete, user.id, levelNum));
     }
 
     private IEnumerator TakePointsCoroutine(System.Action<int> funcComplete, int user_id, int levelNum)
@@ -318,12 +285,7 @@ public class NetworkController : MonoBehaviour
     
     
     
-    public static void TakeNearWay(System.Action<int> funcComplete, int levelNum, float time)
-    {
-        _networkController.StartTakeNearWayCoroutine(funcComplete, levelNum, time);
-    }
-    
-    private void StartTakeNearWayCoroutine(System.Action<int> funcComplete, int levelNum, float time)
+    public void TakeNearWay(System.Action<int> funcComplete, int levelNum, float time)
     {
         StartCoroutine(TakeNearWayCoroutine(funcComplete, levelNum, time));
     }
@@ -380,8 +342,6 @@ public class NetworkController : MonoBehaviour
         {
             string json = www.downloadHandler.text;
             Debug.Log(json);
-            //_playerPoints = JsonUtility.FromJson<Points>(json);
-            //funcComplete.Invoke(levelNum);
         }
         
         www.Dispose();
