@@ -4,42 +4,120 @@ using System.Collections.Generic;
 using UnityEngine;
 using SQL_Classes;
 using UnityEngine.Events;
+using Object = UnityEngine.Object;
+
+
+public class Ghost
+{
+    private GameObject _ghostPrefab;
+    
+    private GameObject _ghost;
+
+    private GhostSystem _ghostSystem;
+
+    private bool _replay = true;
+
+    private List<Point> _points;
+    private int _currentPointNum;
+
+    private Point _prevPoint;
+    private Point _targetPoint;
+
+    public Ghost(GameObject ghostPrefab, List<Point> points)
+    {
+        _ghostPrefab = ghostPrefab;
+        _points = points;
+    }
+
+    public void OnAwake()
+    {
+        _ghostSystem = GhostSystem.This;
+    }
+
+    public void OnStart()
+    {
+        _ghost = Object.Instantiate(_ghostPrefab);
+        _prevPoint =  _points[_currentPointNum++];
+        _targetPoint = _points[_currentPointNum++];
+            
+        _ghost.transform.position = _prevPoint.Position;
+    }
+    
+    public void OnUpdate()
+    {
+        if (_ghostSystem.CurrentFullTime >= _points[_currentPointNum].time)
+        {
+            while (_ghostSystem.CurrentFullTime >= _points[_currentPointNum].time)
+            {
+                _currentPointNum++;
+                    
+                if (_currentPointNum >= _points.Count - 1)
+                {
+                    _currentPointNum = _points.Count - 1;
+                    break;
+                }
+            }
+
+            _prevPoint = _points[_currentPointNum - 1];
+            _targetPoint = _points[_currentPointNum];
+
+            if (_currentPointNum >= _points.Count)
+                StopReplay();
+        }
+            
+        Vector3 newPosition = Vector3.Lerp(_prevPoint.Position, _targetPoint.Position,
+            (_ghostSystem.CurrentFullTime - _prevPoint.time) / (_targetPoint.time - _prevPoint.time));
+
+        _ghost.transform.position = newPosition;
+    }
+    
+    private void StopReplay()
+    {
+        _replay = false;
+    }
+}
+
 
 [Serializable]
 public class GhostReplay
 {
     [SerializeField] private GameObject playerGhostPrefab;
-    private GameObject _playerGhost;
-    
-    private GhostSystem _ghostSystem;
+    [SerializeField] private GameObject otherPlayersGhostsPrefab;
     
     private bool _replay = true;
-    
-    private List<Point> _points;
-    private int _currentPointNum;
-    
-    private Point _prevPoint;
-    private Point _targetPoint;
 
+    private Ghost _playerGhost;
+    private List<Ghost> _otherPlayersGhosts = new List<Ghost>();
     
     public void OnAwake()
     {
-        _ghostSystem = GhostSystem.This;
-        _points = NetworkController.Instance.PlayerPoints;
+        if (NetworkController.Instance.PlayerPoints.Count == 0)
+        {
+            StopReplay();
+            return;
+        }
         
-        if (_points.Count == 0)
-            _replay = false;
+        _playerGhost = new Ghost(playerGhostPrefab, NetworkController.Instance.PlayerPoints);
+        _playerGhost.OnAwake();
+        
+        List<Points> ways = NetworkController.Instance.OtherPlayersPoints.ways;
+
+        for (int i = 0; i < ways.Count; i++)
+        {
+            _otherPlayersGhosts.Add(new Ghost(otherPlayersGhostsPrefab, ways[i].points));
+            _otherPlayersGhosts[i].OnAwake();
+        }
     }
 
     public void OnStart()
     {
         if (_replay)
         {
-            _playerGhost = GameObject.Instantiate(playerGhostPrefab);
-            _prevPoint =  _points[_currentPointNum++];
-            _targetPoint = _points[_currentPointNum++];
-            
-            _playerGhost.transform.position = _prevPoint.Position;
+            _playerGhost.OnStart();
+            foreach (var ghost in _otherPlayersGhosts)
+            {
+                ghost.OnStart();
+            }
         }
     }
     
@@ -47,32 +125,12 @@ public class GhostReplay
     {
         if (_replay)
         {
-            if (_ghostSystem.CurrentFullTime >= _points[_currentPointNum].time)
+            _playerGhost.OnUpdate();
+            foreach (var ghost in _otherPlayersGhosts)
             {
-                while (_ghostSystem.CurrentFullTime >= _points[_currentPointNum].time)
-                {
-                    _currentPointNum++;
-                    
-                    if (_currentPointNum >= _points.Count - 1)
-                    {
-                        _currentPointNum = _points.Count - 1;
-                        break;
-                    }
-                }
-
-                _prevPoint = _points[_currentPointNum - 1];
-                _targetPoint = _points[_currentPointNum];
-
-                if (_currentPointNum >= _points.Count)
-                    StopReplay();
+                ghost.OnUpdate();
             }
-            
-            Vector3 newPosition = Vector3.Lerp(_prevPoint.Position, _targetPoint.Position,
-                (_ghostSystem.CurrentFullTime - _prevPoint.time) / (_targetPoint.time - _prevPoint.time));
-
-            _playerGhost.transform.position = newPosition;
         }
-
     }
     
     public void StopReplay()

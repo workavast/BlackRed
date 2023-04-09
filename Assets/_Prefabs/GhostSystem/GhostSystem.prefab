@@ -44,8 +44,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   levelNum: 1
+  ghostsNumber: 0
   ghostRecord:
     recordFrequency: 60
   ghostReplay:
-    ghostsNumber: 0
     playerGhostPrefab: {fileID: 4033524955370215609, guid: e02e35c268c62154cb17b607484e71dc, type: 3}
+    otherPlayersGhostsPrefab: {fileID: 2801508453684912829, guid: d9bbb612ab941ba4e8604ea457b9f0f3, type: 3}

@@ -65,10 +65,29 @@ public class GhostRecord
     {
         _record = false;
         
-        if(_ghostSystem.CurrentFullTime > NetworkController.Instance.Levels[_levelNum - 1].time)
+        if(_ghostSystem.CurrentFullTime > NetworkController.Instance.Levels[_levelNum - 1].time && NetworkController.Instance.Levels[_levelNum - 1].time > 0 )
             return;
         
-        NetworkController.Instance.SavePoints(_levelNum, _points);
-        NetworkController.Instance.UpdateLevelTime(_levelNum, _ghostSystem.CurrentFullTime);
+        SavePoints();
+    }
+
+    private void SavePoints()
+    {
+        NetworkController.Instance.SavePoints(UpdateLevelTime, _levelNum, _points);
+    }
+    
+    private void UpdateLevelTime()
+    {
+        NetworkController.Instance.UpdateLevelTime(TakeNearWays, _levelNum, _ghostSystem.CurrentFullTime);
+    }
+    
+    private void TakeNearWays()
+    {
+        NetworkController.Instance.TakeNearWay(Completed, _levelNum, NetworkController.Instance.Levels[_levelNum - 1].time);
+    }
+    
+    private void Completed()
+    {
+        Debug.Log("OK");
     }
 }

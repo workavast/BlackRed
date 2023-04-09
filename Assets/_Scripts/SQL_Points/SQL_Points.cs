@@ -48,4 +48,10 @@ namespace SQL_Classes
             points.Add(new Point(x,y,z,time));
         }
     }
+
+    [Serializable]
+    public class Ways
+    {
+        public List<Points> ways = new List<Points>();
+    }
 }

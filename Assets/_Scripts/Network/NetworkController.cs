@@ -24,8 +24,8 @@ public class NetworkController : MonoBehaviour
 
     private Points _playerPoints = new Points();
     public List<Point> PlayerPoints => _playerPoints.points;
-    
-    public List<Points> OtherPlayersPoints { get; private set; }
+
+    public Ways OtherPlayersPoints = new Ways();
 
     void Start()
     {
@@ -37,9 +37,16 @@ public class NetworkController : MonoBehaviour
         
         DontDestroyOnLoad(this.gameObject);
         Instance = this;
-
-        OtherPlayersPoints = new List<Points>();
     }
+
+
+    public void Clear()
+    {
+        user = new User();
+        _playerPoints = new Points();
+        OtherPlayersPoints = new Ways();
+    }
+    
     
     public void UserEnter(string playerName, string playerPassword)
     {
@@ -139,12 +146,12 @@ public class NetworkController : MonoBehaviour
     }
 
     
-    public void UpdateLevelTime(int levelNum, float time)
+    public void UpdateLevelTime(System.Action funcComplete, int levelNum, float time)
     {
-        StartCoroutine(UpdateLevelTimeCoroutine(user.id, levelNum, time));
+        StartCoroutine(UpdateLevelTimeCoroutine(funcComplete, user.id, levelNum, time));
     }
     
-    private IEnumerator UpdateLevelTimeCoroutine(int user_id, int levelNum, float time)
+    private IEnumerator UpdateLevelTimeCoroutine(System.Action funcComplete, int user_id, int levelNum, float time)
     {
         string levelName;
         switch (levelNum)
@@ -195,18 +202,20 @@ public class NetworkController : MonoBehaviour
             var json = www.downloadHandler.text;
             
             user.levels[levelNum-1].time = time;
+            
+            funcComplete.Invoke();
         }
         
         www.Dispose();
     }
     
     
-    public void SavePoints(int levelNum, Points points)
+    public void SavePoints(System.Action funcComplete, int levelNum, Points points)
     {
-        StartCoroutine(SavePointsCoroutine(user.id, levelNum, points));
+        StartCoroutine(SavePointsCoroutine(funcComplete, user.id, levelNum, points));
     }
     
-    private IEnumerator SavePointsCoroutine(int user_id, int levelNum, Points points)
+    private IEnumerator SavePointsCoroutine(System.Action funcComplete, int user_id, int levelNum, Points points)
     {
         string pointsJSON = JsonUtility.ToJson(points);
         
@@ -239,6 +248,7 @@ public class NetworkController : MonoBehaviour
         {
             _playerPoints = points;
             Debug.LogError( www.downloadHandler.text);
+            funcComplete.Invoke();
         }
         
         www.Dispose();
@@ -289,12 +299,12 @@ public class NetworkController : MonoBehaviour
     
     
     
-    public void TakeNearWay(System.Action<int> funcComplete, int levelNum, float time)
+    public void TakeNearWay(System.Action funcComplete, int levelNum, float time)
     {
         StartCoroutine(TakeNearWayCoroutine(funcComplete, levelNum, time));
     }
 
-    private IEnumerator TakeNearWayCoroutine(System.Action<int> funcComplete, int levelNum, float time)
+    private IEnumerator TakeNearWayCoroutine(System.Action funcComplete, int levelNum, float time)
     {
         string levelName;
         switch (levelNum)
@@ -345,11 +355,11 @@ public class NetworkController : MonoBehaviour
         else
         {
             string json = www.downloadHandler.text;
-            
-            OtherPlayersPoints.Add(new Points());
-            OtherPlayersPoints[0] = JsonUtility.FromJson<Points>(json);
-
             Debug.Log(json);
+            
+            OtherPlayersPoints = JsonUtility.FromJson<Ways>(json);
+            
+            funcComplete.Invoke();
         }
         
         www.Dispose();

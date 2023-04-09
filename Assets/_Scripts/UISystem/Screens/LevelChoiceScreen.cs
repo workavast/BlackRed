@@ -11,7 +11,7 @@ public class LevelChoiceScreen : UIScreenBase
     void OnEnable()
     {
         if(levelsTimes.Count != NetworkController.Instance.Levels.Count)
-            Debug.LogError("Attention!: levelsTimes.Count != NetworkController.Levels.Count");
+            Debug.LogError("Attention!: levelsTimes.Count (" + levelsTimes.Count + ") != NetworkController.Instance.Levels.Count (" + NetworkController.Instance.Levels.Count +")");
         
         for (int i = 0; i < levelsTimes.Count; i++)
         {
@@ -73,7 +73,7 @@ public class LevelChoiceScreen : UIScreenBase
         _LoadScene(n);
     }
 
-    private void Buffer(int levelNum)
+    private void Buffer()
     {
     }
 
