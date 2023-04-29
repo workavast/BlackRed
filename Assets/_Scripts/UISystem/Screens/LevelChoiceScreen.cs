@@ -36,14 +36,18 @@ public class LevelChoiceScreen : UIScreenBase
     {
         if (NetworkController.Instance.Levels[levelNum - 1].time != 0)
         {
-            NetworkController.Instance.TakePoints(TakePointsComplete, levelNum);
-            NetworkController.Instance.TakeNearWay(Buffer, levelNum, NetworkController.Instance.Levels[levelNum - 1].time);
+            NetworkController.Instance.TakePlayerWay(TakePlayerWayComplete, levelNum);
         }
         else
-            TakePointsComplete(levelNum);
+            TakeNearWaysComplete(levelNum);
     }
 
-    private void TakePointsComplete(int levelNum)
+    private void TakePlayerWayComplete(int levelNum)
+    {
+        NetworkController.Instance.TakeNearWays(TakeNearWaysComplete, levelNum, NetworkController.Instance.Levels[levelNum - 1].time);
+    }
+
+    private void TakeNearWaysComplete(int levelNum)
     {
         int n;
         switch (levelNum)
@@ -71,10 +75,6 @@ public class LevelChoiceScreen : UIScreenBase
         }
         
         _LoadScene(n);
-    }
-
-    private void Buffer()
-    {
     }
 
     public void _Quit()

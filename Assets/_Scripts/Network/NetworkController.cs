@@ -4,18 +4,18 @@ using UnityEngine;
 using UnityEngine.Networking;
 using SQL_Classes;
 
-enum Commands
-{
-    UserEnter,
-    UserRegistration,
-    UpdateLevelTime,
-    SavePoints,
-    TakePoints,
-    TakeNearWay
-}
-
 public class NetworkController : MonoBehaviour
 {
+    private enum Commands
+    {
+        UserEnter,
+        UserRegistration,
+        UpdateLevelTime,
+        SaveWay,
+        TakePlayerWay,
+        TakeNearWays
+    }
+    
     public static NetworkController Instance { get; private set;} 
     
     private User user;
@@ -48,12 +48,12 @@ public class NetworkController : MonoBehaviour
     }
     
     
-    public void UserEnter(string playerName, string playerPassword)
+    public void UserEnter(System.Action funcComplete, string playerName, string playerPassword)
     {
-        StartCoroutine(UserEnterCoroutine(playerName, playerPassword));
+        StartCoroutine(UserEnterCoroutine(funcComplete, playerName, playerPassword));
     }
 
-    private IEnumerator UserEnterCoroutine(string playerName, string playerPassword)
+    private IEnumerator UserEnterCoroutine(System.Action funcComplete, string playerName, string playerPassword)
     {
         List<IMultipartFormSection> wwwForm = new List<IMultipartFormSection>();
         wwwForm.Add(new MultipartFormDataSection("Command", Commands.UserEnter.ToString()));
@@ -90,19 +90,19 @@ public class NetworkController : MonoBehaviour
             var json = www.downloadHandler.text;
             user = JsonUtility.FromJson<User>(json);
             
-            UIController.LoadScene(0);
+            funcComplete.Invoke();
         }
         
         www.Dispose();
     }
     
     
-    public void UserRegistration(string playerName, string playerPassword)
+    public void UserRegistration(System.Action funcComplete,string playerName, string playerPassword)
     {
-        StartCoroutine(UserRegistrationCoroutine(playerName, playerPassword));
+        StartCoroutine(UserRegistrationCoroutine(funcComplete, playerName, playerPassword));
     }
     
-    private IEnumerator UserRegistrationCoroutine(string playerName, string playerPassword)
+    private IEnumerator UserRegistrationCoroutine(System.Action funcComplete,string playerName, string playerPassword)
     {
         List<IMultipartFormSection> wwwForm = new List<IMultipartFormSection>();
         wwwForm.Add(new MultipartFormDataSection("Command", Commands.UserRegistration.ToString()));
@@ -139,7 +139,7 @@ public class NetworkController : MonoBehaviour
             var json = www.downloadHandler.text;
             user = JsonUtility.FromJson<User>(json);
 
-            UIController.LoadScene(0);
+            funcComplete.Invoke();
         }
         
         www.Dispose();
@@ -210,17 +210,17 @@ public class NetworkController : MonoBehaviour
     }
     
     
-    public void SavePoints(System.Action funcComplete, int levelNum, Points points)
+    public void SaveWay(System.Action funcComplete, int levelNum, Points points)
     {
-        StartCoroutine(SavePointsCoroutine(funcComplete, user.id, levelNum, points));
+        StartCoroutine(SaveWayCoroutine(funcComplete, user.id, levelNum, points));
     }
     
-    private IEnumerator SavePointsCoroutine(System.Action funcComplete, int user_id, int levelNum, Points points)
+    private IEnumerator SaveWayCoroutine(System.Action funcComplete, int user_id, int levelNum, Points points)
     {
         string pointsJSON = JsonUtility.ToJson(points);
         
         List<IMultipartFormSection> wwwForm = new List<IMultipartFormSection>();
-        wwwForm.Add(new MultipartFormDataSection("Command", Commands.SavePoints.ToString()));
+        wwwForm.Add(new MultipartFormDataSection("Command", Commands.SaveWay.ToString()));
         wwwForm.Add(new MultipartFormDataSection("user_id", user_id.ToString()));
         wwwForm.Add(new MultipartFormDataSection("levelNum", levelNum.ToString()));
         wwwForm.Add(new MultipartFormDataSection("points", pointsJSON));
@@ -255,15 +255,15 @@ public class NetworkController : MonoBehaviour
     }
     
     
-    public void TakePoints(System.Action<int> funcComplete, int levelNum)
+    public void TakePlayerWay(System.Action<int> funcComplete, int levelNum)
     {
-        StartCoroutine(TakePointsCoroutine(funcComplete, user.id, levelNum));
+        StartCoroutine(TakePlayerWayCoroutine(funcComplete, user.id, levelNum));
     }
 
-    private IEnumerator TakePointsCoroutine(System.Action<int> funcComplete, int user_id, int levelNum)
+    private IEnumerator TakePlayerWayCoroutine(System.Action<int> funcComplete, int user_id, int levelNum)
     {
         List<IMultipartFormSection> wwwForm = new List<IMultipartFormSection>();
-        wwwForm.Add(new MultipartFormDataSection("Command", Commands.TakePoints.ToString()));
+        wwwForm.Add(new MultipartFormDataSection("Command", Commands.TakePlayerWay.ToString()));
         wwwForm.Add(new MultipartFormDataSection("user_id", user_id.ToString()));
         wwwForm.Add(new MultipartFormDataSection("levelNum", levelNum.ToString()));
 
@@ -299,12 +299,12 @@ public class NetworkController : MonoBehaviour
     
     
     
-    public void TakeNearWay(System.Action funcComplete, int levelNum, float time)
+    public void TakeNearWays(System.Action<int> funcComplete, int levelNum, float time)
     {
-        StartCoroutine(TakeNearWayCoroutine(funcComplete, levelNum, time));
+        StartCoroutine(TakeNearWaysCoroutine(funcComplete, levelNum, time));
     }
 
-    private IEnumerator TakeNearWayCoroutine(System.Action funcComplete, int levelNum, float time)
+    private IEnumerator TakeNearWaysCoroutine(System.Action<int> funcComplete, int levelNum, float time)
     {
         string levelName;
         switch (levelNum)
@@ -326,7 +326,7 @@ public class NetworkController : MonoBehaviour
         }
         
         List<IMultipartFormSection> wwwForm = new List<IMultipartFormSection>();
-        wwwForm.Add(new MultipartFormDataSection("Command", Commands.TakeNearWay.ToString()));
+        wwwForm.Add(new MultipartFormDataSection("Command", Commands.TakeNearWays.ToString()));
         wwwForm.Add(new MultipartFormDataSection("levelNum", levelNum.ToString()));
         wwwForm.Add(new MultipartFormDataSection("levelName", levelName));
         wwwForm.Add(new MultipartFormDataSection("time", timeString));
@@ -359,7 +359,7 @@ public class NetworkController : MonoBehaviour
             
             OtherPlayersPoints = JsonUtility.FromJson<Ways>(json);
             
-            funcComplete.Invoke();
+            funcComplete.Invoke(levelNum);
         }
         
         www.Dispose();
