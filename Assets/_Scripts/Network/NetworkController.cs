@@ -12,8 +12,7 @@ public class NetworkController : MonoBehaviour
         UserRegistration,
         UpdateLevelTime,
         SaveWay,
-        TakePlayerWay,
-        TakeNearWays
+        TakeWays
     }
     
     public static NetworkController Instance { get; private set;} 
@@ -255,66 +254,13 @@ public class NetworkController : MonoBehaviour
     }
     
     
-    public void TakePlayerWay(System.Action<int> funcComplete, int levelNum)
+    public void TakeWays(System.Action<int> funcComplete, int levelNum, float time)
     {
-        StartCoroutine(TakePlayerWayCoroutine(funcComplete, user.id, levelNum));
+        StartCoroutine(TakeWaysCoroutine(funcComplete, user.id, levelNum, time));
     }
 
-    private IEnumerator TakePlayerWayCoroutine(System.Action<int> funcComplete, int user_id, int levelNum)
+    private IEnumerator TakeWaysCoroutine(System.Action<int> funcComplete, int user_id, int levelNum, float time)
     {
-        List<IMultipartFormSection> wwwForm = new List<IMultipartFormSection>();
-        wwwForm.Add(new MultipartFormDataSection("Command", Commands.TakePlayerWay.ToString()));
-        wwwForm.Add(new MultipartFormDataSection("user_id", user_id.ToString()));
-        wwwForm.Add(new MultipartFormDataSection("levelNum", levelNum.ToString()));
-
-        UnityWebRequest www = UnityWebRequest.Post("blackredgame.loc", wwwForm);
-        yield return www.SendWebRequest();
-        
-        if (www.error != null)
-        {
-            switch (www.responseCode)
-            {
-                case (520):
-                {
-                    Debug.LogError("Some error, try again");
-                    break;
-                }
-                default:
-                {
-                    Debug.LogError("Unexpected error");
-                    break;
-                }
-            }
-        }
-        else
-        {
-            string json = www.downloadHandler.text;
-            _playerPoints = JsonUtility.FromJson<Points>(json);
-            
-            funcComplete.Invoke(levelNum);
-        }
-        
-        www.Dispose();
-    }
-    
-    
-    
-    public void TakeNearWays(System.Action<int> funcComplete, int levelNum, float time)
-    {
-        StartCoroutine(TakeNearWaysCoroutine(funcComplete, levelNum, time));
-    }
-
-    private IEnumerator TakeNearWaysCoroutine(System.Action<int> funcComplete, int levelNum, float time)
-    {
-        string levelName;
-        switch (levelNum)
-        {
-            case 1: levelName = "level_1"; break;
-            case 2: levelName = "level_2"; break;
-            case 3: levelName = "level_3"; break;
-            default: Debug.LogError("Not exist num"); yield break;
-        }
-        
         string timeString = time.ToString();
         for (int n = 0; n < timeString.Length; n++)
         {
@@ -326,9 +272,9 @@ public class NetworkController : MonoBehaviour
         }
         
         List<IMultipartFormSection> wwwForm = new List<IMultipartFormSection>();
-        wwwForm.Add(new MultipartFormDataSection("Command", Commands.TakeNearWays.ToString()));
+        wwwForm.Add(new MultipartFormDataSection("Command", Commands.TakeWays.ToString()));
+        wwwForm.Add(new MultipartFormDataSection("user_id", user_id.ToString()));
         wwwForm.Add(new MultipartFormDataSection("levelNum", levelNum.ToString()));
-        wwwForm.Add(new MultipartFormDataSection("levelName", levelName));
         wwwForm.Add(new MultipartFormDataSection("time", timeString));
 
         UnityWebRequest www = UnityWebRequest.Post("blackredgame.loc", wwwForm);
@@ -356,8 +302,13 @@ public class NetworkController : MonoBehaviour
         {
             string json = www.downloadHandler.text;
             Debug.Log(json);
-            
-            OtherPlayersPoints = JsonUtility.FromJson<Ways>(json);
+
+            Ways ss = new Ways();
+            ss = JsonUtility.FromJson<Ways>(json);
+
+            _playerPoints = ss.ways[0];
+            ss.ways.RemoveAt(0);
+            OtherPlayersPoints = ss;
             
             funcComplete.Invoke(levelNum);
         }

@@ -83,7 +83,7 @@ public class GhostRecord
     
     private void TakeNearWays()
     {
-        NetworkController.Instance.TakeNearWays(Completed, _levelNum, NetworkController.Instance.Levels[_levelNum - 1].time);
+        NetworkController.Instance.TakeWays(Completed, _levelNum, NetworkController.Instance.Levels[_levelNum - 1].time);
     }
     
     private void Completed(int levelNum)
