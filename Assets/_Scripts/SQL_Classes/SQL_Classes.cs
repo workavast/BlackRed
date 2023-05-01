@@ -54,4 +54,18 @@ namespace SQL_Classes
     {
         public List<Points> ways = new List<Points>();
     }
+
+    [Serializable]
+    public class Board
+    {
+        public int place;
+        public string name;
+        public float time;
+    }
+
+    [Serializable]
+    public class Leaderboard
+    {
+        public List<Board> boards = new List<Board>();
+    }
 }

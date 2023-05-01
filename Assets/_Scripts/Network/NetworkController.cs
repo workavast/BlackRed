@@ -12,7 +12,8 @@ public class NetworkController : MonoBehaviour
         UserRegistration,
         UpdateLevelTime,
         SaveWay,
-        TakeWays
+        TakeWays,
+        TakeLeaderboard
     }
     
     public static NetworkController Instance { get; private set;} 
@@ -301,7 +302,6 @@ public class NetworkController : MonoBehaviour
         else
         {
             string json = www.downloadHandler.text;
-            Debug.Log(json);
 
             Ways ss = new Ways();
             ss = JsonUtility.FromJson<Ways>(json);
@@ -315,4 +315,52 @@ public class NetworkController : MonoBehaviour
         
         www.Dispose();
     }
+
+
+    
+    public void TakeLeaderboard(System.Action<Leaderboard> funcComplete, int levelNum)
+    {
+        StartCoroutine(TakeLeaderboardCoroutine(funcComplete, user.id, levelNum));
+    }
+    
+    private IEnumerator TakeLeaderboardCoroutine(System.Action<Leaderboard> funcComplete, int user_id, int levelNum)
+    {
+        List<IMultipartFormSection> wwwForm = new List<IMultipartFormSection>();
+        wwwForm.Add(new MultipartFormDataSection("Command", Commands.TakeLeaderboard.ToString()));
+        wwwForm.Add(new MultipartFormDataSection("user_id", user_id.ToString()));
+        wwwForm.Add(new MultipartFormDataSection("levelNum", levelNum.ToString()));
+
+        UnityWebRequest www = UnityWebRequest.Post("blackredgame.loc", wwwForm);
+        yield return www.SendWebRequest();
+        
+        if (www.error != null)
+        {
+            switch (www.responseCode)
+            {
+                case (520):
+                {
+                    Debug.LogError("Some error, try again");
+                    break;
+                }
+                default:
+                {
+                    Debug.LogError("Unexpected error");
+                    string json = www.downloadHandler.text;
+                    Debug.Log(json);
+                    break;
+                }
+            }
+        }
+        else
+        {
+            string json = www.downloadHandler.text;
+            
+            Leaderboard ld = JsonUtility.FromJson<Leaderboard>(json);
+            
+            funcComplete.Invoke(ld);
+        }
+        
+        www.Dispose();
+    }
+
 }

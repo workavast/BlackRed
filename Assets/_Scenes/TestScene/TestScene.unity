@@ -32660,7 +32660,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ca7bfd5700c16964f9e19660edf7b2c9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  recordFrequency: 60
 --- !u!4 &2094035334
 Transform:
   m_ObjectHideFlags: 0
