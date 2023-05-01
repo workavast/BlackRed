@@ -98,6 +98,8 @@ public class Player : MonoBehaviour, ICastSphereTake
     private InputController _inputController;
 
     public static Player This;
+
+    public bool canMove = true;
     
     [field: SerializeField] public Transform GhostRecordPoint { get; private set; }
     
@@ -137,6 +139,8 @@ public class Player : MonoBehaviour, ICastSphereTake
         CeilingCheck();
         SlidingCheck();
         
+        if(!canMove) return;
+        
         _currentState.OnUpdate();
 
         airJump.OnUpdate();
@@ -157,6 +161,8 @@ public class Player : MonoBehaviour, ICastSphereTake
 
     private void FixedUpdate()
     {
+        if(!canMove) return;
+
         _currentState.OnFixedUpdate();
     }
 

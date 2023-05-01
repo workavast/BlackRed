@@ -63,6 +63,8 @@ public class UIController : MonoBehaviour
                 UI_Activ = UIScreenRepository.GetScreen<GameplayScreen>().gameObject; break;
             case Screen.FinishLevelScreen:
                 UI_Activ = UIScreenRepository.GetScreen<FinishLevelScreen>().gameObject; break;
+            case Screen.GameplayMenuScreen:
+                UI_Activ = UIScreenRepository.GetScreen<GameplayMenuScreen>().gameObject; break;
             default:
                 Debug.LogError("Error: invalid string parameter in SetWindow(Screen screen)"); break;
         }

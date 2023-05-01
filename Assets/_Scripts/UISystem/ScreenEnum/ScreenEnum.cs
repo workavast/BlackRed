@@ -7,5 +7,6 @@ public enum Screen
     MainMenu = 4,
     LevelChoiceScreen = 5,
     GameplayScreen = 6,
-    FinishLevelScreen = 7
+    FinishLevelScreen = 7,
+    GameplayMenuScreen = 8
 }

@@ -102,7 +102,6 @@ public class LevelChoiceScreen : UIScreenBase
     public void _LoadLevel()
     {
         NetworkController.Instance.TakeWays(TakeWaysComplete, Error, _loadLevelNum, NetworkController.Instance.Levels[_loadLevelNum - 1].time);
-
     }
     
     private void TakeWaysComplete(int levelNum)

@@ -9,6 +9,7 @@ public class Finish : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
+            InputController.Instance.inputCheck = false;
             UIController.SetWindow(Screen.FinishLevelScreen);
             GhostSystem.This.Finish();
         }

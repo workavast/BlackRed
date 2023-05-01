@@ -1,10 +1,26 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Serialization;
 
 public class InputController : MonoBehaviour
 {
+    public static InputController Instance { get; private set; }
+    public bool inputCheck = true;
+    
+    private void Awake()
+    {
+        if (Instance != null)
+        {
+            Destroy(this);
+            return;
+        }
+
+        Instance = this;
+    }
+
     public bool Jump
     {
         get
@@ -105,45 +121,75 @@ public class InputController : MonoBehaviour
     public Vector2 move;
     public Vector2 look;
     
-    
-    
     public void OnMove(InputValue value)
     {
+        if(!inputCheck) return;
+
         move = value.Get<Vector2>();
     }
     
     public void OnLook(InputValue value)
     {
+        if(!inputCheck) return;
+        
         look = value.Get<Vector2>();
     }
     
     public void OnJump(InputValue value)
     {
+        if(!inputCheck) return;
+        
         Jump = value.isPressed;
     }
     
     public void OnSprint(InputValue value)
     {
+        if(!inputCheck) return;
+        
         _sprint = value.isPressed;
     }
     
     public void OnSlide(InputValue value)
     {
+        if(!inputCheck) return;
+        
         _slide = value.isPressed;
     }
 
     public void OnFirstAbility(InputValue value)
     {
+        if(!inputCheck) return;
+        
         _firstAbility = value.isPressed;
     }
     
     public void OnSecondAbility(InputValue value)
     {
+        if(!inputCheck) return;
+        
         _secondAbility = value.isPressed;
     }
     
     public void OnThirdAbility(InputValue value)
     {
+        if(!inputCheck) return;
+        
         _thirdAbility = value.isPressed;
+    }
+    
+    public void OnESC(InputValue value)
+    {
+        if(!inputCheck) return;
+        
+        if (Player.This.canMove)
+        {
+            Player.This.canMove = false;
+            UIController.SetWindow((Screen)8);   
+        }
+        else
+        {
+            Player.This.canMove = true;
+            UIController.SetWindow((Screen)6);
+        }
     }
 }
