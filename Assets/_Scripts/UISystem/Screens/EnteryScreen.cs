@@ -22,12 +22,17 @@ public class EnteryScreen : UIScreenBase
     {
         if (playerName.text.Length > 0 && playerPassword.text.Length > 0)
         {
-             NetworkController.Instance.UserEnter(EnterCompleted, playerName.text, playerPassword.text);
+             NetworkController.Instance.UserEnter(EnterCompleted, Error, playerName.text, playerPassword.text);
         }
     }
 
     private void EnterCompleted()
     {
         UIController.LoadScene(0);
+    }
+    
+    private void Error(string errorText)
+    {
+        UIController.ShowError(errorText);
     }
 }

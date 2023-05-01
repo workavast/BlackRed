@@ -22,12 +22,17 @@ public class RegistrationScreen : UIScreenBase
     {
         if (playerName.text.Length > 0 && playerPassword.text.Length > 0)
         {
-            NetworkController.Instance.UserRegistration(RegistrationCompleted, playerName.text, playerPassword.text);
+            NetworkController.Instance.UserRegistration(RegistrationCompleted, Error, playerName.text, playerPassword.text);
         }
     }
     
     private void RegistrationCompleted()
     {
         UIController.LoadScene(0);
+    }
+    
+    private void Error(string errorText)
+    {
+        UIController.ShowError(errorText);
     }
 }

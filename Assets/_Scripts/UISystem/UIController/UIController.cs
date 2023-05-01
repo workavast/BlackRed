@@ -83,6 +83,18 @@ public class UIController : MonoBehaviour
             SceneManager.LoadScene(sceneNum);
         }
     }
+
+    public static void ShowError(string errorText)
+    {
+        ErrorScreen errorScreen = UIScreenRepository.GetScreen<ErrorScreen>();
+        errorScreen.gameObject.SetActive(true);
+        errorScreen.ShowError(errorText);
+    }
+    public static void HideError()
+    {
+        ErrorScreen errorScreen = UIScreenRepository.GetScreen<ErrorScreen>();
+        errorScreen.gameObject.SetActive(false);
+    }
     
     public static void Quit()
     {

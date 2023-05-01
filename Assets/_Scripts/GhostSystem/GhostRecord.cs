@@ -73,21 +73,26 @@ public class GhostRecord
 
     private void SavePoints()
     {
-        NetworkController.Instance.SaveWay(UpdateLevelTime, _levelNum, _way);
+        NetworkController.Instance.SaveWay(UpdateLevelTime, Error, _levelNum, _way);
     }
     
     private void UpdateLevelTime()
     {
-        NetworkController.Instance.UpdateLevelTime(TakeNearWays, _levelNum, _ghostSystem.CurrentFullTime);
+        NetworkController.Instance.UpdateLevelTime(TakeNearWays, Error, _levelNum, _ghostSystem.CurrentFullTime);
     }
     
     private void TakeNearWays()
     {
-        NetworkController.Instance.TakeWays(Completed, _levelNum, NetworkController.Instance.Levels[_levelNum - 1].time);
+        NetworkController.Instance.TakeWays(Completed, Error, _levelNum, NetworkController.Instance.Levels[_levelNum - 1].time);
     }
     
     private void Completed(int levelNum)
     {
         Debug.Log("OK");
+    }
+    
+    private void Error(string errorText)
+    {
+        UIController.ShowError(errorText);
     }
 }

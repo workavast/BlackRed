@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -28,7 +29,7 @@ public class NetworkController : MonoBehaviour
     public List<Point> PlayerPoints => _playerWay.points;
     public Ways OtherWays => _otherWays;
 
-    void Start()
+    private void Awake()
     {
         if (Instance != null)
         {
@@ -40,7 +41,6 @@ public class NetworkController : MonoBehaviour
         Instance = this;
     }
 
-
     public void Clear()
     {
         _user = new User();
@@ -49,51 +49,60 @@ public class NetworkController : MonoBehaviour
     }
 
 
-    private void ErrorCode(long errorNum)
+    private void ErrorCode(System.Action<string> funcError, long errorNum)
     {
+        string errorText;
         switch (errorNum)
         {
             case (0):
             {
                 Debug.LogError("No connection");
+                errorText = "No connection";
                 break;
             }
             case (401):
             {
                 Debug.LogError("Not correct password");
+                errorText = "Not correct password";
                 break;
             }
             case (404):
             {
                 Debug.LogError("This name dont exist");
+                errorText = "This name dont exist";
                 break;
             }
             case (409):
             {
                 Debug.LogError("This name is occupied");
+                errorText = "This name is occupied";
                 break;
             }
             case (520):
             {
                 Debug.LogError("Some error, try again");
+                errorText = "Some error, try again";
                 break;
             }
             default:
             {
                 Debug.LogError("Unexpected error");
+                errorText = "Unexpected error";
                 break;
             }
         }
+        
+        funcError.Invoke(errorText);
     }
     
     
     
-    public void UserEnter(System.Action funcComplete, string playerName, string playerPassword)
+    public void UserEnter(System.Action funcComplete, System.Action<string> funcOnError, string playerName, string playerPassword)
     {
-        StartCoroutine(UserEnterCoroutine(funcComplete, playerName, playerPassword));
+        StartCoroutine(UserEnterCoroutine(funcComplete, funcOnError, playerName, playerPassword));
     }
 
-    private IEnumerator UserEnterCoroutine(System.Action funcComplete, string playerName, string playerPassword)
+    private IEnumerator UserEnterCoroutine(System.Action funcComplete, System.Action<string> funcOnError, string playerName, string playerPassword)
     {
         List<IMultipartFormSection> wwwForm = new List<IMultipartFormSection>();
         wwwForm.Add(new MultipartFormDataSection("Command", Commands.UserEnter.ToString()));
@@ -106,7 +115,7 @@ public class NetworkController : MonoBehaviour
         
         if (www.error != null)
         {
-            ErrorCode(www.responseCode);
+            ErrorCode(funcOnError, www.responseCode);
         }
         else
         {
@@ -121,12 +130,12 @@ public class NetworkController : MonoBehaviour
     
     
     
-    public void UserRegistration(System.Action funcComplete,string playerName, string playerPassword)
+    public void UserRegistration(System.Action funcComplete, System.Action<string> funcOnError, string playerName, string playerPassword)
     {
-        StartCoroutine(UserRegistrationCoroutine(funcComplete, playerName, playerPassword));
+        StartCoroutine(UserRegistrationCoroutine(funcComplete, funcOnError, playerName, playerPassword));
     }
     
-    private IEnumerator UserRegistrationCoroutine(System.Action funcComplete,string playerName, string playerPassword)
+    private IEnumerator UserRegistrationCoroutine(System.Action funcComplete, System.Action<string> funcOnError, string playerName, string playerPassword)
     {
         List<IMultipartFormSection> wwwForm = new List<IMultipartFormSection>();
         wwwForm.Add(new MultipartFormDataSection("Command", Commands.UserRegistration.ToString()));
@@ -139,7 +148,7 @@ public class NetworkController : MonoBehaviour
         
         if (www.error != null)
         {
-            ErrorCode(www.responseCode);
+            ErrorCode(funcOnError, www.responseCode);
         }
         else
         {
@@ -154,12 +163,12 @@ public class NetworkController : MonoBehaviour
 
     
     
-    public void UpdateLevelTime(System.Action funcComplete, int levelNum, float time)
+    public void UpdateLevelTime(System.Action funcComplete, System.Action<string> funcOnError, int levelNum, float time)
     {
-        StartCoroutine(UpdateLevelTimeCoroutine(funcComplete, _user.id, levelNum, time));
+        StartCoroutine(UpdateLevelTimeCoroutine(funcComplete, funcOnError, _user.id, levelNum, time));
     }
     
-    private IEnumerator UpdateLevelTimeCoroutine(System.Action funcComplete, int user_id, int levelNum, float time)
+    private IEnumerator UpdateLevelTimeCoroutine(System.Action funcComplete, System.Action<string> funcOnError, int user_id, int levelNum, float time)
     {
         string levelName;
         switch (levelNum)
@@ -191,7 +200,7 @@ public class NetworkController : MonoBehaviour
         
         if (www.error != null)
         {
-            ErrorCode(www.responseCode);
+            ErrorCode(funcOnError, www.responseCode);
         }
         else
         {
@@ -207,12 +216,12 @@ public class NetworkController : MonoBehaviour
     
     
     
-    public void SaveWay(System.Action funcComplete, int levelNum, Way way)
+    public void SaveWay(System.Action funcComplete, System.Action<string> funcOnError, int levelNum, Way way)
     {
-        StartCoroutine(SaveWayCoroutine(funcComplete, _user.id, levelNum, way));
+        StartCoroutine(SaveWayCoroutine(funcComplete, funcOnError, _user.id, levelNum, way));
     }
     
-    private IEnumerator SaveWayCoroutine(System.Action funcComplete, int user_id, int levelNum, Way way)
+    private IEnumerator SaveWayCoroutine(System.Action funcComplete, System.Action<string> funcOnError, int user_id, int levelNum, Way way)
     {
         string wayJSON = JsonUtility.ToJson(way);
         
@@ -227,7 +236,7 @@ public class NetworkController : MonoBehaviour
         
         if (www.error != null)
         {
-            ErrorCode(www.responseCode);
+            ErrorCode(funcOnError, www.responseCode);
         }
         else
         {
@@ -243,12 +252,12 @@ public class NetworkController : MonoBehaviour
     
     
     
-    public void TakeWays(System.Action<int> funcComplete, int levelNum, float time)
+    public void TakeWays(System.Action<int> funcComplete, System.Action<string> funcOnError, int levelNum, float time)
     {
-        StartCoroutine(TakeWaysCoroutine(funcComplete, _user.id, levelNum, time));
+        StartCoroutine(TakeWaysCoroutine(funcComplete, funcOnError, _user.id, levelNum, time));
     }
 
-    private IEnumerator TakeWaysCoroutine(System.Action<int> funcComplete, int user_id, int levelNum, float time)
+    private IEnumerator TakeWaysCoroutine(System.Action<int> funcComplete, System.Action<string> funcOnError, int user_id, int levelNum, float time)
     {
         if (Levels[levelNum - 1].time == 0)
         {
@@ -291,7 +300,7 @@ public class NetworkController : MonoBehaviour
         
         if (www.error != null)
         {
-            ErrorCode(www.responseCode);
+            ErrorCode(funcOnError, www.responseCode);
         }
         else
         {
@@ -313,12 +322,12 @@ public class NetworkController : MonoBehaviour
 
 
     
-    public void TakeLeaderboard(System.Action<Leaderboard> funcComplete, int levelNum)
+    public void TakeLeaderboard(System.Action<Leaderboard> funcComplete, System.Action<string> funcOnError, int levelNum)
     {
-        StartCoroutine(TakeLeaderboardCoroutine(funcComplete, _user.id, levelNum));
+        StartCoroutine(TakeLeaderboardCoroutine(funcComplete, funcOnError, _user.id, levelNum));
     }
     
-    private IEnumerator TakeLeaderboardCoroutine(System.Action<Leaderboard> funcComplete, int user_id, int levelNum)
+    private IEnumerator TakeLeaderboardCoroutine(System.Action<Leaderboard> funcComplete, System.Action<string> funcOnError, int user_id, int levelNum)
     {
         List<IMultipartFormSection> wwwForm = new List<IMultipartFormSection>();
         wwwForm.Add(new MultipartFormDataSection("Command", Commands.TakeLeaderboard.ToString()));
@@ -330,7 +339,7 @@ public class NetworkController : MonoBehaviour
         
         if (www.error != null)
         {
-            ErrorCode(www.responseCode);
+            ErrorCode(funcOnError, www.responseCode);
         }
         else
         {

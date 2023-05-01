@@ -75,7 +75,7 @@ public class LevelChoiceScreen : UIScreenBase
         }
 
         if(NetworkController.Instance.Levels[levelNum - 1].time != 0)
-            NetworkController.Instance.TakeLeaderboard(LoadingLevelInformation, levelNum);
+            NetworkController.Instance.TakeLeaderboard(LoadingLevelInformation, Error, levelNum);
     }
 
     private void LoadingLevelInformation(Leaderboard leaderboard)
@@ -101,7 +101,7 @@ public class LevelChoiceScreen : UIScreenBase
 
     public void _LoadLevel()
     {
-        NetworkController.Instance.TakeWays(TakeWaysComplete, _loadLevelNum, NetworkController.Instance.Levels[_loadLevelNum - 1].time);
+        NetworkController.Instance.TakeWays(TakeWaysComplete, Error, _loadLevelNum, NetworkController.Instance.Levels[_loadLevelNum - 1].time);
 
     }
     
@@ -135,8 +135,8 @@ public class LevelChoiceScreen : UIScreenBase
         _LoadScene(n);
     }
 
-    public void _Quit()
+    private void Error(string errorText)
     {
-        UIController.Quit();
+        UIController.ShowError(errorText);
     }
 }
