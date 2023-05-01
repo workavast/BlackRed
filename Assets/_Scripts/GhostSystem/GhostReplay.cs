@@ -100,7 +100,7 @@ public class GhostReplay
         _playerGhost = new Ghost(playerGhostPrefab, NetworkController.Instance.PlayerPoints);
         _playerGhost.OnAwake();
         
-        List<Points> ways = NetworkController.Instance.OtherPlayersPoints.ways;
+        List<Way> ways = NetworkController.Instance.OtherWays.ways;
 
         for (int i = 0; i < ways.Count; i++)
         {

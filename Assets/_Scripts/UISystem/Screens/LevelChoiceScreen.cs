@@ -54,6 +54,9 @@ public class LevelChoiceScreen : UIScreenBase
 
     public void _LoadLevelInformation(int levelNum)
     {
+        if(_loadLevelNum == levelNum)
+            return;
+
         _loadLevelNum = levelNum;
         
         levelInformation.SetActive(true);
@@ -98,12 +101,8 @@ public class LevelChoiceScreen : UIScreenBase
 
     public void _LoadLevel()
     {
-        if (NetworkController.Instance.Levels[_loadLevelNum - 1].time != 0)
-        {
-            NetworkController.Instance.TakeWays(TakeWaysComplete, _loadLevelNum, NetworkController.Instance.Levels[_loadLevelNum - 1].time);
-        }
-        else
-            TakeWaysComplete(_loadLevelNum);
+        NetworkController.Instance.TakeWays(TakeWaysComplete, _loadLevelNum, NetworkController.Instance.Levels[_loadLevelNum - 1].time);
+
     }
     
     private void TakeWaysComplete(int levelNum)

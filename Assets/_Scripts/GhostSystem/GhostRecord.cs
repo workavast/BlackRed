@@ -15,7 +15,7 @@ public class GhostRecord
     private Transform _ghostRecordPoint;
     private Vector3 _prevPlayerPosition;
     private Vector3 _prevDirection;
-    private Points _points = new Points();
+    private Way _way = new Way();
     private bool _record = true;
     
     public void OnAwake()
@@ -43,7 +43,7 @@ public class GhostRecord
                 if (_prevDirection != direction)
                 {
                     Vector3 currentPos = _ghostRecordPoint.position;
-                    _points.Add(currentPos.x,currentPos.y,currentPos.z, _ghostSystem.CurrentFullTime);
+                    _way.Add(currentPos.x,currentPos.y,currentPos.z, _ghostSystem.CurrentFullTime);
                 
                     _currentTime = 0;
                     
@@ -73,7 +73,7 @@ public class GhostRecord
 
     private void SavePoints()
     {
-        NetworkController.Instance.SaveWay(UpdateLevelTime, _levelNum, _points);
+        NetworkController.Instance.SaveWay(UpdateLevelTime, _levelNum, _way);
     }
     
     private void UpdateLevelTime()

@@ -39,7 +39,7 @@ namespace SQL_Classes
     }
 
     [Serializable]
-    public class Points
+    public class Way
     {
         public List<Point> points = new List<Point>();
 
@@ -52,7 +52,7 @@ namespace SQL_Classes
     [Serializable]
     public class Ways
     {
-        public List<Points> ways = new List<Points>();
+        public List<Way> ways = new List<Way>();
     }
 
     [Serializable]
