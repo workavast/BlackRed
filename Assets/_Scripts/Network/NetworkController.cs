@@ -344,6 +344,7 @@ public class NetworkController : MonoBehaviour
         else
         {
             string json = www.downloadHandler.text;
+            Debug.Log(json);
             
             Leaderboard ld = JsonUtility.FromJson<Leaderboard>(json);
             

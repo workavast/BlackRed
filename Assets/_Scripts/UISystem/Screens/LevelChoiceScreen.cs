@@ -17,8 +17,10 @@ public class LevelChoiceScreen : UIScreenBase
         public TextMeshProUGUI time;
     }
     
+    [SerializeField] private GameObject playerFrame;
     [SerializeField] private GameObject levelInformation;
-    [SerializeField] private GameObject loadLevelInformation;
+    [SerializeField] private GameObject loadLeaderboard;
+    [SerializeField] private GameObject closeLeaderboard;
     
     [Space]
     [SerializeField] private Sprite redMedal;
@@ -43,7 +45,6 @@ public class LevelChoiceScreen : UIScreenBase
     void OnEnable()
     {
         levelInformation.SetActive(false);
-
         foreach (var board in playersBoards)
         {
             board.place.text = "";
@@ -60,13 +61,20 @@ public class LevelChoiceScreen : UIScreenBase
         _loadLevelNum = levelNum;
         
         levelInformation.SetActive(true);
-        loadLevelInformation.SetActive(true);
-        
-        if(NetworkController.Instance.Levels[levelNum - 1].time == 0)
+
+        if (NetworkController.Instance.Levels[levelNum - 1].time == 0)
+        {
             currentTime.text = "не пройдено";
+            closeLeaderboard.SetActive(true);
+        }
         else
+        {
             currentTime.text = NetworkController.Instance.Levels[levelNum - 1].time.ToString();
+            closeLeaderboard.SetActive(false);
+            loadLeaderboard.SetActive(true);
+        }
         
+        playerFrame.SetActive(false);
         foreach (var board in playersBoards)
         {
             board.place.text = "";
@@ -80,12 +88,20 @@ public class LevelChoiceScreen : UIScreenBase
 
     private void LoadingLevelInformation(Leaderboard leaderboard)
     {
-        loadLevelInformation.SetActive(false);
+        loadLeaderboard.SetActive(false);
         for (int n = 0; n < leaderboard.boards.Count; n++)
         {
             playersBoards[n].place.text = leaderboard.boards[n].place.ToString();
             playersBoards[n].name.text =  leaderboard.boards[n].name;
             playersBoards[n].time.text =  leaderboard.boards[n].time.ToString();
+            
+            if (playersBoards[n].name.text == NetworkController.Instance.UserName)
+            {
+                playerFrame.SetActive(true);
+                Vector3 startPos = playerFrame.transform.position;
+                startPos.y = playersBoards[n].name.transform.position.y;
+                playerFrame.transform.position = startPos;
+            }
         }
     }
     
