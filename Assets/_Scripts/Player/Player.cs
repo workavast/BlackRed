@@ -89,10 +89,13 @@ public class Player : MonoBehaviour, ICastSphereTake
     [SerializeField] private Crouch crouch = new Crouch();
     private StateBase _currentState = new StateBase();
     public PlayerState CurrentStateName => currentStateName;
-    
+
     [Header("Abilities")] 
+    [SerializeField] private bool canAirJump;
     [SerializeField] private AirJump airJump;
+    [SerializeField] private bool canSlowMotion;
     [SerializeField] private SlowMotion slowMotion;
+    [SerializeField] private bool canCastSphere;
     [SerializeField] private CastSphere castSphere;
 
     private InputController _inputController;
@@ -145,15 +148,15 @@ public class Player : MonoBehaviour, ICastSphereTake
 
         airJump.OnUpdate();
         slowMotion.OnUpdate();
-        if (_inputController.FirstAbility)
+        if (_inputController.FirstAbility && canAirJump)
         {
             airJump.OnUse();
         }
-        if (_inputController.SecondAbility)
+        if (_inputController.SecondAbility && canSlowMotion)
         {
             slowMotion.OnUse();
         }
-        if (_inputController.ThirdAbility)
+        if (_inputController.ThirdAbility && canCastSphere)
         {
             castSphere.OnUse();
         }

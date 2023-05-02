@@ -5303,8 +5303,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerFrame: {fileID: 4154888953017947015}
   levelInformation: {fileID: 3214503888233703604}
-  loadLevelInformation: {fileID: 5458016161782992332}
-  closeLevelInformation: {fileID: 1406390445055379302}
+  loadLeaderboard: {fileID: 5458016161782992332}
+  closeLeaderboard: {fileID: 1406390445055379302}
   redMedal: {fileID: 21300000, guid: 6dfbe0e56a60b474a964337b1e65985e, type: 3}
   goldMedal: {fileID: 21300000, guid: 9fbd214e17ae6be4d9154a73d5cdc5f4, type: 3}
   silverMedal: {fileID: 21300000, guid: 3f43094c40f7cf043804af3bb777694b, type: 3}
