@@ -20,7 +20,7 @@ public class Ghost
     private List<Point> _points;
     private int _currentPointNum;
 
-    private Point _prevPoint;
+    private Point _currentPoint;
     private Point _targetPoint;
 
     public Ghost(GameObject ghostPrefab, List<Point> points)
@@ -37,10 +37,10 @@ public class Ghost
     public void OnStart()
     {
         _ghost = Object.Instantiate(_ghostPrefab);
-        _prevPoint =  _points[_currentPointNum++];
+        _currentPoint =  _points[_currentPointNum++];
         _targetPoint = _points[_currentPointNum++];
             
-        _ghost.transform.position = _prevPoint.Position;
+        _ghost.transform.position = _currentPoint.Position;
     }
     
     public void OnUpdate()
@@ -58,15 +58,15 @@ public class Ghost
                 }
             }
 
-            _prevPoint = _points[_currentPointNum - 1];
+            _currentPoint = _points[_currentPointNum - 1];
             _targetPoint = _points[_currentPointNum];
 
             if (_currentPointNum >= _points.Count)
                 StopReplay();
         }
             
-        Vector3 newPosition = Vector3.Lerp(_prevPoint.Position, _targetPoint.Position,
-            (_ghostSystem.CurrentFullTime - _prevPoint.time) / (_targetPoint.time - _prevPoint.time));
+        Vector3 newPosition = Vector3.Lerp(_currentPoint.Position, _targetPoint.Position,
+            (_ghostSystem.CurrentFullTime - _currentPoint.time) / (_targetPoint.time - _currentPoint.time));
 
         _ghost.transform.position = newPosition;
     }
