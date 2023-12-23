@@ -11,11 +11,6 @@ public class MainMenuScreen : UIScreenBase
     {
         playerName.text = NetworkController.Instance.UserName;
     }
-
-    public void _SetWindow(int screen)
-    {
-        UIController.SetWindow((Screen)screen);
-    }
     
     public void _LoadScene(int sceneNum)
     {

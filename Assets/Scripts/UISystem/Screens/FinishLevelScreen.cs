@@ -36,11 +36,6 @@ public class FinishLevelScreen : UIScreenBase
         }
     }
     
-    public void _SetWindow(int screen)
-    {
-        UIController.SetWindow((Screen)screen);
-    }
-    
     public void _LoadScene(int sceneNum)
     {
         UIController.LoadScene(sceneNum);

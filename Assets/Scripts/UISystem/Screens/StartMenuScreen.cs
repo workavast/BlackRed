@@ -10,11 +10,6 @@ public class StartMenuScreen : UIScreenBase
     {
         NetworkController.Instance.Clear();
     }
-
-    public void _SetWindow(int screen)
-    {
-        UIController.SetWindow((Screen)screen);
-    }
     
     public void _LoadScene(int sceneNum)
     {

@@ -16,11 +16,6 @@ public class GameplayMenuScreen : UIScreenBase
     {
         Time.timeScale = _timeScale;
     }
-
-    public void _SetWindow(int screen)
-    {
-        UIController.SetWindow((Screen)screen);
-    }
     
     public void _LoadScene(int sceneNum)
     {

@@ -18,11 +18,6 @@ public class GameplayScreen  : UIScreenBase
     {
         fullLevelTime.text = _ghostRecord.CurrentFullTime.ToString();
     }
-
-    public void _SetWindow(int screen)
-    {
-        UIController.SetWindow((Screen)screen);
-    }
     
     public void _LoadScene(int sceneNum)
     {
