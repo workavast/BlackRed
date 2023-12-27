@@ -1,9 +1,11 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using SQL_Classes;
 using UnityEngine.Events;
+using WEB_API;
 using Object = UnityEngine.Object;
 
 
@@ -22,7 +24,7 @@ public class Ghost
 
     private Point _currentPoint;
     private Point _targetPoint;
-
+    
     public Ghost(GameObject ghostPrefab, List<Point> points)
     {
         _ghostPrefab = ghostPrefab;
@@ -40,7 +42,7 @@ public class Ghost
         _currentPoint =  _points[_currentPointNum++];
         _targetPoint = _points[_currentPointNum++];
             
-        _ghost.transform.position = _currentPoint.Position;
+        _ghost.transform.position = _currentPoint.Position();
     }
     
     public void OnUpdate()
@@ -65,7 +67,7 @@ public class Ghost
                 StopReplay();
         }
             
-        Vector3 newPosition = Vector3.Lerp(_currentPoint.Position, _targetPoint.Position,
+        Vector3 newPosition = Vector3.Lerp(_currentPoint.Position(), _targetPoint.Position(),
             (_ghostSystem.CurrentFullTime - _currentPoint.time) / (_targetPoint.time - _currentPoint.time));
 
         _ghost.transform.position = newPosition;
@@ -88,23 +90,31 @@ public class GhostReplay
 
     private Ghost _playerGhost;
     private List<Ghost> _otherPlayersGhosts = new List<Ghost>();
-    
+    private GlobalData _globalData => GlobalData.Instance;
+
     public void OnAwake()
     {
-        if (NetworkController.Instance.PlayerPoints.Count == 0)
+        Debug.Log(_globalData.PlayerDataStorage.Levels.Count);
+        Debug.Log(_globalData.CurrentLevelData.LevelNum);
+        
+        var res = _globalData.PlayerDataStorage.Levels.FirstOrDefault(l =>
+            l.Num == _globalData.CurrentLevelData.LevelNum);
+        if (res is null)
         {
+            Debug.Log("is null");
             StopReplay();
             return;
         }
         
-        _playerGhost = new Ghost(playerGhostPrefab, NetworkController.Instance.PlayerPoints);
+        _playerGhost = new Ghost(playerGhostPrefab, res.Way.points);
+        Debug.Log("new player ghost");
         _playerGhost.OnAwake();
         
-        List<Way> ways = NetworkController.Instance.OtherWays.ways;
-
-        for (int i = 0; i < ways.Count; i++)
+        SomeWays someWays = _globalData.CurrentLevelData.OtherPlayersWays;
+        for (int i = 0; i < someWays.Ways.Count; i++)
         {
-            _otherPlayersGhosts.Add(new Ghost(otherPlayersGhostsPrefab, ways[i].points));
+            _otherPlayersGhosts.Add(new Ghost(otherPlayersGhostsPrefab, someWays.Ways[i].points));
+            Debug.Log("new other player ghost");
             _otherPlayersGhosts[i].OnAwake();
         }
     }

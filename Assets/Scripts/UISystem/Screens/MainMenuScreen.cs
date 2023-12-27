@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using WEB_API;
 
 public class MainMenuScreen : UIScreenBase
 {
@@ -9,7 +10,7 @@ public class MainMenuScreen : UIScreenBase
 
     void OnEnable()
     {
-        playerName.text = NetworkController.Instance.UserName;
+        playerName.text = GlobalData.Instance.PlayerDataStorage.Name;
     }
     
     public void _LoadScene(int sceneNum)

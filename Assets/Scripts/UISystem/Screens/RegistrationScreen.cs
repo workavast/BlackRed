@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using WEB_API;
 
 public class RegistrationScreen : UIScreenBase
 {
@@ -17,7 +18,7 @@ public class RegistrationScreen : UIScreenBase
     {
         if (playerName.text.Length > 0 && playerPassword.text.Length > 0)
         {
-            NetworkController.Instance.UserRegistration(RegistrationCompleted, Error, playerName.text, playerPassword.text);
+            GlobalData.Instance.NetworkController.UserRegistration(RegistrationCompleted, Error, playerName.text, playerPassword.text);
         }
     }
     

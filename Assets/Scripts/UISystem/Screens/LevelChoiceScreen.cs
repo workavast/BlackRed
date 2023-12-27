@@ -1,11 +1,13 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using TMPro;
 using Image = UnityEngine.UI.Image;
 using SQL_Classes;
 using UnityEngine.Serialization;
+using WEB_API;
 
 public class LevelChoiceScreen : UIScreenBase
 {
@@ -41,6 +43,8 @@ public class LevelChoiceScreen : UIScreenBase
     [SerializeField] private List<PlayerBord> playersBoards;
 
     private int _loadLevelNum;
+
+    private GlobalData _globalData => GlobalData.Instance;
     
     void OnEnable()
     {
@@ -62,14 +66,15 @@ public class LevelChoiceScreen : UIScreenBase
         
         levelInformation.SetActive(true);
 
-        if (NetworkController.Instance.Levels[levelNum - 1].time == 0)
+        var res = _globalData.PlayerDataStorage.Levels.FirstOrDefault(l => l.Num == levelNum);
+        if (res is null)
         {
             currentTime.text = "не пройдено";
             closeLeaderboard.SetActive(true);
         }
         else
         {
-            currentTime.text = NetworkController.Instance.Levels[levelNum - 1].time.ToString();
+            currentTime.text = res.Time.ToString();
             closeLeaderboard.SetActive(false);
             loadLeaderboard.SetActive(true);
         }
@@ -82,20 +87,20 @@ public class LevelChoiceScreen : UIScreenBase
             board.time.text = "";
         }
 
-        if(NetworkController.Instance.Levels[levelNum - 1].time != 0)
-            NetworkController.Instance.TakeLeaderboard(LoadingLevelInformation, Error, levelNum);
+        if (_globalData.PlayerDataStorage.Levels.FirstOrDefault(l => l.Num == levelNum) != null)
+            _globalData.NetworkController.TakeLeaderboardPage(LoadingLevelInformation, Error, levelNum);
     }
 
-    private void LoadingLevelInformation(Leaderboard leaderboard)
+    private void LoadingLevelInformation(LeaderboardPage leaderboardPage)
     {
         loadLeaderboard.SetActive(false);
-        for (int n = 0; n < leaderboard.boards.Count; n++)
+        for (int n = 0; n < leaderboardPage.Rows.Count; n++)
         {
-            playersBoards[n].place.text = leaderboard.boards[n].place.ToString();
-            playersBoards[n].name.text =  leaderboard.boards[n].name;
-            playersBoards[n].time.text =  leaderboard.boards[n].time.ToString();
+            playersBoards[n].place.text = leaderboardPage.Rows[n].Place.ToString();
+            playersBoards[n].name.text =  leaderboardPage.Rows[n].UserName;
+            playersBoards[n].time.text =  leaderboardPage.Rows[n].Time.ToString();
             
-            if (playersBoards[n].name.text == NetworkController.Instance.UserName)
+            if (playersBoards[n].name.text == _globalData.PlayerDataStorage.Name)
             {
                 playerFrame.SetActive(true);
                 Vector3 startPos = playerFrame.transform.position;
@@ -110,15 +115,16 @@ public class LevelChoiceScreen : UIScreenBase
         UIController.LoadScene(sceneNum);
     }
 
+    
     public void _LoadLevel()
     {
-        NetworkController.Instance.TakeWays(TakeWaysComplete, Error, _loadLevelNum, NetworkController.Instance.Levels[_loadLevelNum - 1].time);
+        _globalData.NetworkController.TakeNearWays(TakeWaysComplete, Error, _loadLevelNum);
     }
     
-    private void TakeWaysComplete(int levelNum)
+    private void TakeWaysComplete()
     {
         int n;
-        switch (levelNum)
+        switch (_loadLevelNum)
         {
             case 1:
             {

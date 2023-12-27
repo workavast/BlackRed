@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
+using WEB_API;
 
 public class GhostSystem : MonoBehaviour
 {
@@ -20,6 +22,7 @@ public class GhostSystem : MonoBehaviour
     
     private void Awake()
     {
+        Debug.Log("Ghost system");
         This = this;
         ghostRecord.OnAwake();
         ghostReplay.OnAwake();
@@ -27,7 +30,9 @@ public class GhostSystem : MonoBehaviour
     
     void Start()
     {
-        _previousFullTime = NetworkController.Instance.Levels[levelNum - 1].time;
+        var res = GlobalData.Instance.PlayerDataStorage.Levels.FirstOrDefault(l => l.Num == levelNum);
+        if(res != null)
+            _previousFullTime = res.Time;
         ghostRecord.OnStart();
         ghostReplay.OnStart();
     }

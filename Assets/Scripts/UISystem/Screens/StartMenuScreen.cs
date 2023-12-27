@@ -3,12 +3,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using WEB_API;
 
 public class StartMenuScreen : UIScreenBase
 {
     private void Start()
     {
-        NetworkController.Instance.Clear();
+        GlobalData.Instance.NetworkController.Clear();
     }
     
     public void _LoadScene(int sceneNum)

@@ -2,6 +2,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using SQL_Classes;
 using System;
+using System.Linq;
+using WEB_API;
 
 [Serializable]
 public class GhostRecord
@@ -17,6 +19,8 @@ public class GhostRecord
     private Vector3 _prevDirection;
     private Way _way = new Way();
     private bool _record = true;
+
+    private GlobalData _globalData => GlobalData.Instance;
     
     public void OnAwake()
     {
@@ -64,29 +68,33 @@ public class GhostRecord
     public void StopRecord()
     {
         _record = false;
-        
-        if(_ghostSystem.CurrentFullTime > NetworkController.Instance.Levels[_levelNum - 1].time && NetworkController.Instance.Levels[_levelNum - 1].time > 0 )
-            return;
-        
-        SavePoints();
-    }
 
-    private void SavePoints()
-    {
-        NetworkController.Instance.SaveWay(UpdateLevelTime, Error, _levelNum, _way);
+        var res = GlobalData.Instance.PlayerDataStorage.Levels.FirstOrDefault(l => l.Num == _levelNum);
+        if(res != null && _ghostSystem.CurrentFullTime > res.Time)
+            return;
+
+        if (_globalData.PlayerDataStorage.Levels.FirstOrDefault(l => l.Num == _levelNum) is null)
+            RegisterLevelResult();
+        else
+            UpdateLevelResult();
     }
     
-    private void UpdateLevelTime()
+    private void RegisterLevelResult()
     {
-        NetworkController.Instance.UpdateLevelTime(TakeNearWays, Error, _levelNum, _ghostSystem.CurrentFullTime);
+        _globalData.NetworkController.RegisterLevelResult(TakeNearWays, Error, _levelNum, _ghostSystem.CurrentFullTime, _way);
+    }
+    
+    private void UpdateLevelResult()
+    {
+        _globalData.NetworkController.UpdateLevelResult(TakeNearWays, Error, _levelNum, _ghostSystem.CurrentFullTime, _way);
     }
     
     private void TakeNearWays()
     {
-        NetworkController.Instance.TakeWays(Completed, Error, _levelNum, NetworkController.Instance.Levels[_levelNum - 1].time);
+        _globalData.NetworkController.TakeNearWays(Completed, Error, _levelNum);
     }
     
-    private void Completed(int levelNum)
+    private void Completed()
     {
         Debug.Log("OK");
     }
