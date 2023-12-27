@@ -1,12 +1,10 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using TMPro;
 using Image = UnityEngine.UI.Image;
 using SQL_Classes;
-using UnityEngine.Serialization;
 using WEB_API;
 
 public class LevelChoiceScreen : UIScreenBase
