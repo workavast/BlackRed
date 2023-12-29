@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using SharedLibrary.Responses;
+using SharedLibrary.Responses.FriendsController;
+using SharedLibrary.Responses.LevelsController;
 using UnityEngine;
 
 namespace SQL_Classes
@@ -93,6 +95,60 @@ namespace SQL_Classes
         public SomeWays(List<Way> ways)
         {
             Ways = ways;
+        }
+    }
+
+    public class FriendPair
+    {
+        public int Id { get; private set; }
+        public string FriendName { get; private set; }
+
+        public FriendPair(FriendPairResponse friendPairResponse)
+        {
+            Id = friendPairResponse.Id;
+            FriendName = friendPairResponse.FriendName;
+        }
+        
+        public FriendPair(int id, string friendName)
+        {
+            Id = id;
+            FriendName = friendName;
+        }
+    }
+
+    public class FriendRequestFromMe
+    {
+        public int Id { get; private set; }
+        public string UserName { get; private set; }
+
+        public FriendRequestFromMe(FriendRequestResponse friendPairResponse)
+        {
+            Id = friendPairResponse.RequestId;
+            UserName = friendPairResponse.RecipientName;
+        }
+        
+        public FriendRequestFromMe(int id, string userName)
+        {
+            Id = id;
+            UserName = userName;
+        }
+    }
+    
+    public class FriendRequestToMe
+    {
+        public int Id { get; private set; }
+        public string UserName { get; private set; }
+
+        public FriendRequestToMe(FriendRequestResponse friendPairResponse)
+        {
+            Id = friendPairResponse.RequestId;
+            UserName = friendPairResponse.SenderName;
+        }
+        
+        public FriendRequestToMe(int id, string userName)
+        {
+            Id = id;
+            UserName = userName;
         }
     }
 }
