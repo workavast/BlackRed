@@ -1,3 +1,4 @@
+using UISystem.Screens;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -29,6 +30,9 @@ public class UIController : MonoBehaviour
         else 
         if (UIScreenRepository.GetScreen<FinishLevelScreen>().isActiveAndEnabled)
             UI_Activ = UIScreenRepository.GetScreen<FinishLevelScreen>().gameObject;
+        else 
+        if (UIScreenRepository.GetScreen<FriendsScreen>().isActiveAndEnabled)
+            UI_Activ = UIScreenRepository.GetScreen<FriendsScreen>().gameObject;
         else 
         {
             Debug.LogError("Undefined screen or null");
@@ -65,6 +69,8 @@ public class UIController : MonoBehaviour
                 UI_Activ = UIScreenRepository.GetScreen<GameplayMenuScreen>().gameObject; break;   
             case Screen.ControlScreen:
                 UI_Activ = UIScreenRepository.GetScreen<ControlScreen>().gameObject; break;
+            case Screen.FriendsScreen:
+                UI_Activ = UIScreenRepository.GetScreen<FriendsScreen>().gameObject; break;
             default:
                 Debug.LogError("Error: invalid string parameter in SetWindow(Screen screen)"); break;
         }

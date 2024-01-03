@@ -11,6 +11,7 @@ namespace WEB_API
         public IReadOnlyPlayerDataStorage PlayerDataStorage => _playerDataStorage;
         public IReadOnlyCurrentLevelData CurrentLevelData => _currentLevelData;
         public IFriendsDataStorage FriendsDataStorage => _friendsDataStorage;
+        
         public NetworkController NetworkController { get; private set; }
 
         public static GlobalData Instance { get; private set;} 

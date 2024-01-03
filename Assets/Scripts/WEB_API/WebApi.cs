@@ -1,7 +1,6 @@
 using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
-using UnityEngine;
 using UnityEngine.Networking;
 
 public static partial class WebApi
@@ -59,9 +58,6 @@ public static partial class WebApi
 
         while (!request.isDone)
             await Task.Delay(10);
-        
-        Debug.Log(request.error);
-        Debug.Log(request.downloadHandler.text);
         
         return request.error == null 
             ? (true, null, JsonConvert.DeserializeObject<T>(request.downloadHandler.text))

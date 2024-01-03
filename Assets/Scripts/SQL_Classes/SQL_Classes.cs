@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using SharedLibrary.Responses;
 using SharedLibrary.Responses.FriendsController;
 using SharedLibrary.Responses.LevelsController;
 using UnityEngine;

@@ -1,26 +1,15 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using TMPro;
 using Image = UnityEngine.UI.Image;
 using SQL_Classes;
+using UISystem.Elements;
 using WEB_API;
 
 public class LevelChoiceScreen : UIScreenBase
 {
-    [Serializable]
-    private struct PlayerBord
-    {
-        public TextMeshProUGUI place;
-        public TextMeshProUGUI name;
-        public TextMeshProUGUI time;
-    }
-    
-    [SerializeField] private GameObject playerFrame;
     [SerializeField] private GameObject levelInformation;
-    [SerializeField] private GameObject loadLeaderboard;
-    [SerializeField] private GameObject closeLeaderboard;
     
     [Space]
     [SerializeField] private Sprite redMedal;
@@ -36,9 +25,10 @@ public class LevelChoiceScreen : UIScreenBase
     [SerializeField] private TextMeshProUGUI goldTime;
     [SerializeField] private TextMeshProUGUI silverTime;
     [SerializeField] private TextMeshProUGUI copperTime;
-    
+
     [Space]
-    [SerializeField] private List<PlayerBord> playersBoards;
+    [SerializeField] private LeaderboardPage_UI globalLeaderboard;
+    [SerializeField] private LeaderboardPage_UI friendsLeaderboard;
 
     private int _loadLevelNum;
 
@@ -47,12 +37,8 @@ public class LevelChoiceScreen : UIScreenBase
     void OnEnable()
     {
         levelInformation.SetActive(false);
-        foreach (var board in playersBoards)
-        {
-            board.place.text = "";
-            board.name.text = "";
-            board.time.text = "";
-        }
+        globalLeaderboard.Init();
+        friendsLeaderboard.Init();
     }
 
     public void _LoadLevelInformation(int levelNum)
@@ -67,59 +53,71 @@ public class LevelChoiceScreen : UIScreenBase
         var res = _globalData.PlayerDataStorage.Levels.FirstOrDefault(l => l.Num == levelNum);
         if (res is null)
         {
+            globalLeaderboard.SwitchCloseScreenVisible(true);
+            friendsLeaderboard.SwitchCloseScreenVisible(true);
             currentTime.text = "не пройдено";
-            closeLeaderboard.SetActive(true);
+            return;
         }
-        else
-        {
-            currentTime.text = res.Time.ToString();
-            closeLeaderboard.SetActive(false);
-            loadLeaderboard.SetActive(true);
-        }
+
+        globalLeaderboard.SwitchCloseScreenVisible(false);
+        friendsLeaderboard.SwitchCloseScreenVisible(false);
         
-        playerFrame.SetActive(false);
-        foreach (var board in playersBoards)
-        {
-            board.place.text = "";
-            board.name.text = "";
-            board.time.text = "";
-        }
-
-        if (_globalData.PlayerDataStorage.Levels.FirstOrDefault(l => l.Num == levelNum) != null)
-            _globalData.NetworkController.TakeLeaderboardPage(LoadingLevelInformation, Error, levelNum);
+        currentTime.text = res.Time.ToString();
+        
+        _globalData.NetworkController.TakeGlobalLeaderboardPage(LoadingGlobalLeaderboard, Error, levelNum);
+        _globalData.NetworkController.TakeFriendsLeaderboardPage(LoadingFriendsLeaderboard, Error, levelNum);
     }
 
-    private void LoadingLevelInformation(LeaderboardPage leaderboardPage)
+    private void LoadingGlobalLeaderboard(LeaderboardPage leaderboardPage)
     {
-        loadLeaderboard.SetActive(false);
-        for (int n = 0; n < leaderboardPage.Rows.Count; n++)
-        {
-            playersBoards[n].place.text = leaderboardPage.Rows[n].Place.ToString();
-            playersBoards[n].name.text =  leaderboardPage.Rows[n].UserName;
-            playersBoards[n].time.text =  leaderboardPage.Rows[n].Time.ToString();
-            
-            if (playersBoards[n].name.text == _globalData.PlayerDataStorage.Name)
-            {
-                playerFrame.SetActive(true);
-                Vector3 startPos = playerFrame.transform.position;
-                startPos.y = playersBoards[n].name.transform.position.y;
-                playerFrame.transform.position = startPos;
-            }
-        }
+        globalLeaderboard.SetData(leaderboardPage.Rows);
+        globalLeaderboard.SwitchLoadScreenVisible(false);
     }
-    
+
+    private void LoadingFriendsLeaderboard(LeaderboardPage leaderboardPage)
+    {
+        friendsLeaderboard.SetData(leaderboardPage.Rows);
+        globalLeaderboard.SwitchLoadScreenVisible(false);
+    }
+
     public void _LoadScene(int sceneNum)
     {
         UIController.LoadScene(sceneNum);
     }
-
     
     public void _LoadLevel()
     {
-        _globalData.NetworkController.TakeNearWays(TakeWaysComplete, Error, _loadLevelNum);
+        _globalData.NetworkController.TakeNearWays(OnTakeWaysComplete, Error, _loadLevelNum);
+    }
+
+    public void _ShowGlobalLeaderboard() => SwitchLeaderboard(LeaderboardType.Global);
+    
+    public void _ShowFriendsLeaderboard() => SwitchLeaderboard(LeaderboardType.Friends);
+
+    private void SwitchLeaderboard(LeaderboardType leaderboardType)
+    {
+        switch (leaderboardType)
+        {
+            case LeaderboardType.Global:
+                globalLeaderboard.SwitchVisible(true);
+                friendsLeaderboard.SwitchVisible(false);
+                break;
+            case LeaderboardType.Friends:
+                globalLeaderboard.SwitchVisible(false);
+                friendsLeaderboard.SwitchVisible(true);
+                break;
+            default: 
+                throw new Exception("Undefined leaderboard type");
+        }
     }
     
-    private void TakeWaysComplete()
+    private enum LeaderboardType
+    {
+        Global = 0,
+        Friends = 10
+    }
+    
+    private void OnTakeWaysComplete()
     {
         int n;
         switch (_loadLevelNum)
