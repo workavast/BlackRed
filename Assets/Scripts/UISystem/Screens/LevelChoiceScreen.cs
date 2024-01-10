@@ -1,11 +1,11 @@
 using System;
 using System.Linq;
+using DataStorages;
 using UnityEngine;
 using TMPro;
 using Image = UnityEngine.UI.Image;
-using SQL_Classes;
 using UISystem.Elements;
-using WEB_API;
+using WebApiConverters;
 
 public class LevelChoiceScreen : UIScreenBase
 {
@@ -64,8 +64,8 @@ public class LevelChoiceScreen : UIScreenBase
         
         currentTime.text = res.Time.ToString();
         
-        _globalData.NetworkController.TakeGlobalLeaderboardPage(LoadingGlobalLeaderboard, Error, levelNum);
-        _globalData.NetworkController.TakeFriendsLeaderboardPage(LoadingFriendsLeaderboard, Error, levelNum);
+        _globalData.ApiController.TakeGlobalLeaderboardPage(LoadingGlobalLeaderboard, Error, levelNum);
+        _globalData.ApiController.TakeFriendsLeaderboardPage(LoadingFriendsLeaderboard, Error, levelNum);
     }
 
     private void LoadingGlobalLeaderboard(LeaderboardPage leaderboardPage)
@@ -87,7 +87,7 @@ public class LevelChoiceScreen : UIScreenBase
     
     public void _LoadLevel()
     {
-        _globalData.NetworkController.TakeNearWays(OnTakeWaysComplete, Error, _loadLevelNum);
+        _globalData.ApiController.TakeNearWays(OnTakeWaysComplete, Error, _loadLevelNum);
     }
 
     public void _ShowGlobalLeaderboard() => SwitchLeaderboard(LeaderboardType.Global);

@@ -1,3 +1,4 @@
+using DataStorages;
 using UnityEngine;
 using TMPro;
 using WEB_API;
@@ -24,11 +25,11 @@ public class EnteryScreen : UIScreenBase
             return;
         
         SwitchLoadingVisible(true);
-        GlobalData.Instance.NetworkController
+        GlobalData.Instance.ApiController
             .UserLogin(EnterCompleted, OnError, playerName.text, playerPassword.text);
     }
 
-    private void EnterCompleted() => GlobalData.Instance.NetworkController.TakePlayerLevelsData(LoadPlayerDataCompleted, OnError);
+    private void EnterCompleted() => GlobalData.Instance.ApiController.TakePlayerLevelsData(LoadPlayerDataCompleted, OnError);
     
     private void LoadPlayerDataCompleted()
     {

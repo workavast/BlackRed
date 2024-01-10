@@ -3584,6 +3584,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1602128784453123177, guid: bc4f1b0ffb8bf5840a7da158d8d55426, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1863500798608706146, guid: bc4f1b0ffb8bf5840a7da158d8d55426, type: 3}
       propertyPath: m_Name
       value: GlobalLeaderboard

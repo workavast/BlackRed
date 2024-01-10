@@ -8,7 +8,7 @@ public class Finish : MonoBehaviour
         {
             InputController.Instance.inputCheck = false;
             UIController.SetWindow(Screen.FinishLevelScreen);
-            GhostSystem.This.Finish();
+            GhostController.This.Finish();
         }
     }
 }

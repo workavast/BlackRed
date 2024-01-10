@@ -1,45 +1,43 @@
 using System;
+using DataStorages;
 using SharedLibrary.Paths;
 using SharedLibrary.Requests.AuthenticationController;
 using SharedLibrary.Responses.AuthenticationController;
 
-namespace WEB_API
+namespace Apis
 {
-    public class AuthenticationNetworkController : NetworkControllerBase
+    public class AuthenticationApi : ApiBase
     {
-        protected override string ControllerPath => AuthenticationPath;
-        private const string AuthenticationPath = "Authentication";
+        protected override string ControllerPath => "Authentication";
 
-        public AuthenticationNetworkController(PlayerDataStorage playerDataStorage, 
+        public AuthenticationApi(PlayerDataStorage playerDataStorage, 
             CurrentLevelData currentLevelData, FriendsDataStorage friendsDataStorage) 
             : base(playerDataStorage, currentLevelData, friendsDataStorage) { }
         
-        public async void UserRegistration
-            (Action onSuccessDelegate, Action<string> onErrorDelegate, string playerName, string playerPassword)
+        public async void UserRegistration(Action onSuccess, Action<string> onError, string playerName, string playerPassword)
         {
             var req = new AuthenticationRequest(playerName, playerPassword);
             
             var res = await TryPost<AuthenticationResponse>
-                (AuthenticationControllerPaths.Register, req, onErrorDelegate);
+                (AuthenticationControllerPaths.Register, req, onError);
             if(!res.Item1) return;
             
             PlayerDataStorage.SetMainData(playerName, playerPassword, res.Item2.Toke);
             
-            onSuccessDelegate?.Invoke();
+            onSuccess?.Invoke();
         }
         
-        public async void UserLogin
-            (Action onSuccessDelegate, Action<string> onErrorDelegate, string playerName, string playerPassword)
+        public async void UserLogin(Action onSuccess, Action<string> onError, string playerName, string playerPassword)
         {
             var req = new AuthenticationRequest(playerName, playerPassword);
             
             var res = await TryPost<AuthenticationResponse>
-                (AuthenticationControllerPaths.Login, req, onErrorDelegate);
+                (AuthenticationControllerPaths.Login, req, onError);
             if (!res.Item1) return;
 
             PlayerDataStorage.SetMainData(playerName, playerPassword, res.Item2.Toke);
             
-            onSuccessDelegate?.Invoke();
+            onSuccess?.Invoke();
         }
     }
 }

@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
-using SQL_Classes;
 
-namespace WEB_API
+namespace DataStorages
 {
     public class PlayerDataStorage : IReadOnlyPlayerDataStorage
     {

@@ -1,4 +1,5 @@
-﻿using TMPro;
+﻿using DataStorages;
+using TMPro;
 using UISystem.Elements;
 using UnityEngine;
 using WEB_API;
@@ -32,9 +33,9 @@ namespace UISystem.Screens
             friendRequestsFromMeTable.SwitchLoadScreenVisible(true);
             friendRequestsToMeTable.SwitchLoadScreenVisible(true);
             
-            _globalData.NetworkController.TakeFriends(OnFriendListLoad, null);
-            _globalData.NetworkController.TakeFromMeRequests(OnRequestsFromMeListLoad, null);
-            _globalData.NetworkController.TakeToMeRequests(OnFriendRequestsToMeListLoad, null);
+            _globalData.ApiController.TakeFriends(OnFriendListLoad, null);
+            _globalData.ApiController.TakeFromMeRequests(OnRequestsFromMeListLoad, null);
+            _globalData.ApiController.TakeToMeRequests(OnFriendRequestsToMeListLoad, null);
         }
         
         private void OnFriendListLoad()
@@ -60,22 +61,22 @@ namespace UISystem.Screens
 
         private void DeleteFriend(int friendPairId)
         {
-            _globalData.NetworkController.DeleteFriend(UpdateInfo, OnError, friendPairId);
+            _globalData.ApiController.DeleteFriend(UpdateInfo, OnError, friendPairId);
         }
 
         private void AcceptRequest(int requestId)
         {
-            _globalData.NetworkController.AcceptRequest(UpdateInfo, OnError, requestId);
+            _globalData.ApiController.AcceptRequest(UpdateInfo, OnError, requestId);
         }
 
         private void DeAcceptRequest(int requestId)
         {
-            _globalData.NetworkController.DeAcceptRequest(UpdateInfo, OnError, requestId);
+            _globalData.ApiController.DeAcceptRequest(UpdateInfo, OnError, requestId);
         }
         
         private void CancelRequest(int requestId)
         {
-            _globalData.NetworkController.CancelFriendRequest(UpdateInfo, OnError, requestId);
+            _globalData.ApiController.CancelFriendRequest(UpdateInfo, OnError, requestId);
         }
         
         public void _SendFriendRequest()
@@ -83,7 +84,7 @@ namespace UISystem.Screens
             if(addFriendName.text == "") return;
             
             var userName = addFriendName.text;
-            _globalData.NetworkController.SendFriendRequest(UpdateInfo, OnError, userName);
+            _globalData.ApiController.SendFriendRequest(UpdateInfo, OnError, userName);
             addFriendName.text = "";
         }
 

@@ -5,11 +5,11 @@ public class FinishLevelScreen : UIScreenBase
 {
     [SerializeField] private TMP_Text fullLevelTime;
     [SerializeField] private TMP_Text timesDifference;
-    private GhostSystem _ghostRecord;
+    private GhostController _ghostRecord;
     
     private void OnEnable()
     {
-        _ghostRecord = GhostSystem.This;
+        _ghostRecord = GhostController.This;
 
         fullLevelTime.text = _ghostRecord.CurrentFullTime.ToString();
         

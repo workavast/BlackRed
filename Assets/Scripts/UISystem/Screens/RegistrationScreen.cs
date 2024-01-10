@@ -1,3 +1,4 @@
+using DataStorages;
 using UnityEngine;
 using TMPro;
 using WEB_API;
@@ -23,11 +24,11 @@ public class RegistrationScreen : UIScreenBase
         if (playerName.text.Length <= 0 || playerPassword.text.Length <= 0) return;
         SwitchLoadingVisible(true);
 
-        GlobalData.Instance.NetworkController.UserRegistration(RegistrationCompleted, OnError, playerName.text,
+        GlobalData.Instance.ApiController.UserRegistration(RegistrationCompleted, OnError, playerName.text,
             playerPassword.text);
     }
 
-    private void RegistrationCompleted() => GlobalData.Instance.NetworkController.TakePlayerLevelsData(LoadPlayerDataCompleted, OnError);
+    private void RegistrationCompleted() => GlobalData.Instance.ApiController.TakePlayerLevelsData(LoadPlayerDataCompleted, OnError);
     
     private void LoadPlayerDataCompleted()
     {

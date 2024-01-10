@@ -1,6 +1,6 @@
-﻿using SQL_Classes;
+﻿using GhostSystem;
 
-namespace WEB_API
+namespace DataStorages
 {
     public class CurrentLevelData : IReadOnlyCurrentLevelData
     {

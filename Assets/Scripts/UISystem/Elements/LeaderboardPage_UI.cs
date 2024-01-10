@@ -1,6 +1,6 @@
-using SQL_Classes;
+using DataStorages;
 using UnityEngine;
-using WEB_API;
+using WebApiConverters;
 
 namespace UISystem.Elements
 {

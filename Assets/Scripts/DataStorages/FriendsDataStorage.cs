@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
-using SQL_Classes;
+using WebApiConverters;
 
-namespace WEB_API
+namespace DataStorages
 {
     public class FriendsDataStorage : IFriendsDataStorage
     {

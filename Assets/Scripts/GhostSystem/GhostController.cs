@@ -1,8 +1,10 @@
 using System.Linq;
+using DataStorages;
+using GhostSystem;
 using UnityEngine;
 using WEB_API;
 
-public class GhostSystem : MonoBehaviour
+public class GhostController : MonoBehaviour
 {
     [SerializeField] [Range(1,3)] private int levelNum;
     [SerializeField] [Range(1,5)] private int ghostsNumber;
@@ -16,7 +18,7 @@ public class GhostSystem : MonoBehaviour
     
     public int LevelNum => levelNum;
     
-    public static GhostSystem This;
+    public static GhostController This;
     
     private void Awake()
     {
